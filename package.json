@@ -10,6 +10,7 @@
     "un-migrate-back": "npx sequelize-cli db:migrate:undo",
     "seed-all": "npx sequelize-cli db:seed:all",
     "seed-undo-all": "npx sequelize-cli db:seed:undo:all",
+    "generate-model": "npx sequelize-cli model:generate --name User --attributes id:integer,firstName:string,lastName:string,email:string",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
