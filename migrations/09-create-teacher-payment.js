@@ -37,7 +37,7 @@ module.exports = {
             allowNull: false,
           },
           price: {
-            type: Sequelize.DOUBLE(6, 2),
+            type: Sequelize.DOUBLE,
             allowNull: false,
           },
           active: {

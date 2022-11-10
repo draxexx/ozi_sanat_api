@@ -42,6 +42,15 @@ module.exports = {
           phone: "05245246123",
           authority: 4,
         },
+        {
+          email: "merveoymak@hotmail.com",
+          password: "hasan-pass",
+          firstName: "Merve",
+          lastName: "Oymak",
+          gender: 2,
+          phone: "05245246123",
+          authority: 4,
+        },
       ],
       {}
     );

@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       price: {
-        type: DataTypes.DOUBLE(6, 2),
+        type: DataTypes.DOUBLE,
         allowNull: false,
       },
       compensationAmount: {
