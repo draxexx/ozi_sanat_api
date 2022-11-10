@@ -30,6 +30,11 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: false,
           },
+          gender: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: 1,
+          },
           phone: {
             type: Sequelize.STRING,
             allowNull: false,
@@ -40,7 +45,7 @@ module.exports = {
           },
           image: {
             type: Sequelize.STRING,
-            allowNull: false,
+            allowNull: true,
           },
           active: {
             type: Sequelize.BOOLEAN,

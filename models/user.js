@@ -10,42 +10,42 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      User.hasMany(models.TeacherCourse, {
+      User.hasMany(models.teacher_course, {
         foreignKey: "teacherId",
-        as: "teachers",
+        as: "course_teachers",
       });
-      User.belongsToMany(models.BranchCourse, {
-        through: models.BranchCourse,
+      User.belongsToMany(models.branch_course, {
+        through: models.teacher_course,
         foreignKey: "teacherId",
         as: "branch_courses",
       });
 
-      User.hasMany(models.LessonStudent, {
+      User.hasMany(models.lesson_student, {
         foreignKey: "studentId",
-        as: "students",
+        as: "lesson_students",
       });
-      User.belongsToMany(models.Lesson, {
-        through: models.LessonStudent,
+      User.belongsToMany(models.lesson, {
+        through: models.lesson_student,
         foreignKey: "studentId",
         as: "lessons",
       });
 
-      User.hasMany(models.StudentPayment, {
+      User.hasMany(models.student_payment, {
         foreignKey: "studentId",
-        as: "students",
+        as: "payment_students",
       });
-      User.belongsToMany(models.BranchCourse, {
-        through: models.StudentPayment,
+      User.belongsToMany(models.branch_course, {
+        through: models.student_payment,
         foreignKey: "studentId",
-        as: "branch_courses",
+        as: "payment_branch_courses",
       });
 
-      User.hasMany(models.TeacherPayment, {
+      User.hasMany(models.teacher_payment, {
         foreignKey: "teacherId",
-        as: "teachers",
+        as: "payment_teachers",
       });
 
-      User.hasMany(models.Notification, {
+      User.hasMany(models.notification, {
         foreignKey: "studentId",
         as: "users",
       });
@@ -76,6 +76,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      gender: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 1,
+      },
       phone: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -86,7 +91,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       image: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       active: {
         type: DataTypes.BOOLEAN,

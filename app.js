@@ -3,15 +3,17 @@ const app = express();
 const dotenv = require("dotenv");
 const port = 3000;
 
+dotenv.config();
+
 // routes
+const users = require("./routes/users");
 
 // middlewares
-
-dotenv.config();
 
 app.use(express.json());
 
 // routes
+app.use("/users", users);
 
 module.exports = app;
 
