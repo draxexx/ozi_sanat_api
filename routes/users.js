@@ -1,11 +1,52 @@
 const express = require("express");
 const router = express.Router();
 
-const { user } = require("../models");
+const {
+  branch,
+  course,
+  branch_course,
+  user,
+  teacher_course,
+} = require("../models");
 
 router.get("/", async (req, res, next) => {
   try {
     const users = await user.findAll();
+    return res.json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get("/teachers", async (req, res, next) => {
+  try {
+    const users = await user.findAll({
+      where: {
+        authority: 3,
+      },
+      include: [
+        {
+          model: teacher_course,
+          as: "teacher_courses",
+          include: [
+            {
+              model: branch_course,
+              as: "branch_course",
+              include: [
+                {
+                  model: course,
+                  as: "course",
+                },
+                {
+                  model: branch,
+                  as: "branch",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
     return res.json(users);
   } catch (error) {
     next(error);

@@ -19,26 +19,26 @@ module.exports = (sequelize, DataTypes) => {
         as: "course",
       });
 
-      BranchCourse.hasMany(models.teacher_course, {
-        foreignKey: "branchCourseId",
-        as: "teacher_branch_courses",
-      });
-      BranchCourse.belongsToMany(models.user, {
-        through: models.branch_course,
-        foreignKey: "branchCourseId",
-        as: "teachers",
-      });
+      // BranchCourse.hasMany(models.teacher_course, {
+      //   foreignKey: "branchCourseId",
+      //   as: "teacher_branch_courses",
+      // });
+      // BranchCourse.belongsToMany(models.user, {
+      //   through: models.branch_course,
+      //   foreignKey: "branchCourseId",
+      //   as: "teachers",
+      // });
 
-      BranchCourse.hasMany(models.student_payment, {
-        foreignKey: "branchCourseId",
-        as: "student_branch_courses",
-      });
+      // BranchCourse.hasMany(models.student_payment, {
+      //   foreignKey: "branchCourseId",
+      //   as: "student_branch_courses",
+      // });
 
-      BranchCourse.belongsToMany(models.user, {
-        through: models.student_payment,
-        foreignKey: "branchCourseId",
-        as: "students",
-      });
+      // BranchCourse.belongsToMany(models.user, {
+      //   through: models.student_payment,
+      //   foreignKey: "branchCourseId",
+      //   as: "students",
+      // });
     }
   }
   BranchCourse.init(
@@ -80,6 +80,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "branch_course",
+      timestamps: false,
+      tableName: "branch_course",
     }
   );
   return BranchCourse;

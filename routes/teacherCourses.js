@@ -1,23 +1,23 @@
 const express = require("express");
 const router = express.Router();
 
-const { branch, course, branch_course } = require("../models");
+const { branch_course, teacher_course, user } = require("../models");
 
 router.get("/", async (req, res, next) => {
   try {
-    const branchCourses = await branch_course.findAll({
+    const teacherCourses = await teacher_course.findAll({
       include: [
         {
-          model: branch,
-          as: "branch",
+          model: branch_course,
+          as: "branch_course",
         },
         {
-          model: course,
-          as: "course",
+          model: user,
+          as: "teacher",
         },
       ],
     });
-    return res.json(branchCourses);
+    return res.json(teacherCourses);
   } catch (error) {
     next(error);
   }

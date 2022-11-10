@@ -48,6 +48,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "homework",
+      timestamps: false,
+      tableName: "homework",
     }
   );
   return Homework;

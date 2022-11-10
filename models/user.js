@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       User.hasMany(models.teacher_course, {
         foreignKey: "teacherId",
-        as: "course_teachers",
+        as: "teacher_courses",
       });
       User.belongsToMany(models.branch_course, {
         through: models.teacher_course,
@@ -92,6 +92,7 @@ module.exports = (sequelize, DataTypes) => {
       image: {
         type: DataTypes.STRING,
         allowNull: true,
+        defaultValue: "",
       },
       active: {
         type: DataTypes.BOOLEAN,
@@ -102,6 +103,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "user",
+      timestamps: false,
+      tableName: "user",
     }
   );
   return User;
