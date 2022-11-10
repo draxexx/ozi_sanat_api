@@ -5,7 +5,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
     try {
       await queryInterface.createTable(
-        "user",
+        "teacher_payment",
         {
           id: {
             type: Sequelize.INTEGER,
@@ -13,33 +13,31 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true,
           },
-          email: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true,
-          },
-          password: {
-            type: Sequelize.STRING,
-            allowNull: false,
-          },
-          firstName: {
-            type: Sequelize.STRING,
-            allowNull: false,
-          },
-          lastName: {
-            type: Sequelize.STRING,
-            allowNull: false,
-          },
-          phone: {
-            type: Sequelize.STRING,
-            allowNull: false,
-          },
-          authority: {
+          teacherId: {
             type: Sequelize.INTEGER,
+            primaryKey: true,
+            allowNull: false,
+            references: {
+              model: "user",
+              key: "id",
+            },
+            onUpdate: "CASCADE",
+            onDelete: "RESTRICT",
+          },
+          startDate: {
+            type: Sequelize.DATEONLY,
             allowNull: false,
           },
-          image: {
-            type: Sequelize.STRING,
+          endDate: {
+            type: Sequelize.DATEONLY,
+            allowNull: false,
+          },
+          paymentDate: {
+            type: Sequelize.DATEONLY,
+            allowNull: false,
+          },
+          price: {
+            type: Sequelize.DOUBLE(6, 2),
             allowNull: false,
           },
           active: {
@@ -58,6 +56,6 @@ module.exports = {
     }
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("user");
+    await queryInterface.dropTable("teacher_payment");
   },
 };
