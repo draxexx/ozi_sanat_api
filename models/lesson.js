@@ -9,7 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {}
+    static associate(models) {
+      Lesson.belongsTo(models.teacher_course, {
+        foreignKey: "teacherCourseId",
+      });
+
+      Lesson.belongsToMany(models.user, {
+        through: models.lesson_student,
+        foreignKey: "lessonId",
+        as: "students",
+      });
+    }
   }
   Lesson.init(
     {
@@ -29,6 +39,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
+      },
+      isCompleted: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       date: {
         type: DataTypes.DATEONLY,

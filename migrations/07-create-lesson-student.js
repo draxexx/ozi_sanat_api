@@ -35,6 +35,11 @@ module.exports = {
             onUpdate: "CASCADE",
             onDelete: "RESTRICT",
           },
+          status: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            defaultValue: 0,
+          },
           active: {
             type: Sequelize.BOOLEAN,
             allowNull: false,

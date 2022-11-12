@@ -5,8 +5,9 @@ const {
   getAllUsers,
   getAllManagers,
   getAllBranchManagers,
-  getAllStudents,
   getAllTeachers,
+  getAllStudents,
+  getSingleStudent,
 } = require("../controllers/user");
 
 router.get("/", getAllUsers);
@@ -14,5 +15,6 @@ router.get("/managers", getAllManagers);
 router.get("/branchmanagers", getAllBranchManagers);
 router.get("/teachers", getAllTeachers);
 router.get("/students", getAllStudents);
+router.get("/students/:id", getSingleStudent);
 
 module.exports = router;

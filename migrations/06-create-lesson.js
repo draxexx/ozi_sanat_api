@@ -28,6 +28,11 @@ module.exports = {
             type: Sequelize.DATEONLY,
             allowNull: false,
           },
+          isCompleted: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defaultValue: false,
+          },
           active: {
             type: Sequelize.BOOLEAN,
             allowNull: false,

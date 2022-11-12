@@ -41,6 +41,11 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
       },
+      status: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       active: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
