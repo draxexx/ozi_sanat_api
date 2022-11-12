@@ -9,12 +9,7 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate(models) {
-      Notification.belongsTo(models.user, {
-        foreignKey: "studentId",
-        as: "student",
-      });
-    }
+    static associate(models) {}
   }
   Notification.init(
     {
