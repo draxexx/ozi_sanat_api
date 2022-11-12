@@ -54,6 +54,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         defaultValue: "",
       },
+      notificationId: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: true,
+      },
       active: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

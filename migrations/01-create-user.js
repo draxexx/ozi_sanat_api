@@ -48,6 +48,11 @@ module.exports = {
             allowNull: true,
             defaultValue: "",
           },
+          notificationId: {
+            type: Sequelize.STRING,
+            allowNull: true,
+            unique: true,
+          },
           active: {
             type: Sequelize.BOOLEAN,
             allowNull: false,
