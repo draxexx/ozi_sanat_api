@@ -13,6 +13,12 @@ module.exports = (sequelize, DataTypes) => {
       Course.belongsToMany(models.branch, {
         through: models.branch_course,
         foreignKey: "courseId",
+        as: "branches",
+      });
+
+      Course.hasMany(models.branch_course, {
+        foreignKey: "courseId",
+        as: "branchCourses",
       });
     }
   }

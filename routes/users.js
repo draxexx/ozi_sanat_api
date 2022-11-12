@@ -8,13 +8,23 @@ const {
   getAllTeachers,
   getAllStudents,
   getSingleStudent,
+  getSingleStudentLessons,
+  getSingleStudentPayments,
+  getSingleTeacher,
+  getSingleTeacherCourses,
+  getSingleTeacherLessons,
 } = require("../controllers/user");
 
 router.get("/", getAllUsers);
 router.get("/managers", getAllManagers);
 router.get("/branchmanagers", getAllBranchManagers);
 router.get("/teachers", getAllTeachers);
+router.get("/teachers/:id", getSingleTeacher);
+router.get("/teachers/:id/courses", getSingleTeacherCourses);
+router.get("/teachers/:id/lessons", getSingleTeacherLessons);
 router.get("/students", getAllStudents);
 router.get("/students/:id", getSingleStudent);
+router.get("/students/:id/lessons", getSingleStudentLessons);
+router.get("/students/:id/payments", getSingleStudentPayments);
 
 module.exports = router;

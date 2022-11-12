@@ -1,4 +1,12 @@
-const { lesson, user } = require("../models");
+const {
+  branch,
+  branch_course,
+  course,
+  lesson,
+  user,
+  student_payment,
+  teacher_course,
+} = require("../models");
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -54,6 +62,70 @@ const getAllTeachers = async (req, res, next) => {
   }
 };
 
+const getSingleTeacher = async (req, res, next) => {
+  try {
+    const data = await user.findOne({
+      where: {
+        id: req.params.id,
+        authority: 3,
+      },
+    });
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSingleTeacherCourses = async (req, res, next) => {
+  try {
+    const data = await user.findOne({
+      where: {
+        id: req.params.id,
+        authority: 3,
+      },
+      include: {
+        model: branch_course,
+        as: "branchCourses",
+        include: [
+          {
+            model: course,
+            as: "course",
+          },
+          {
+            model: branch,
+            as: "branch",
+          },
+        ],
+      },
+    });
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSingleTeacherLessons = async (req, res, next) => {
+  try {
+    const data = await user.findOne({
+      where: {
+        id: req.params.id,
+        authority: 3,
+      },
+      include: {
+        model: teacher_course,
+        as: "teacherCourses",
+        include: {
+          model: lesson,
+          as: "lessons",
+        },
+      },
+    });
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // students
 
 const getAllStudents = async (req, res, next) => {
@@ -90,12 +162,36 @@ const getSingleStudentLessons = async (req, res, next) => {
         id: req.params.id,
         authority: 4,
       },
-      include: [
-        {
-          model: lesson,
-          as: "lessons",
+      include: {
+        model: lesson,
+        as: "lessons",
+      },
+    });
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSingleStudentPayments = async (req, res, next) => {
+  try {
+    const data = await user.findOne({
+      where: {
+        id: req.params.id,
+        authority: 4,
+      },
+      include: {
+        model: student_payment,
+        as: "payments",
+        include: {
+          model: branch_course,
+          as: "branchCourse",
+          include: {
+            model: course,
+            as: "course",
+          },
         },
-      ],
+      },
     });
     return res.json(data);
   } catch (error) {
@@ -108,7 +204,11 @@ module.exports = {
   getAllManagers,
   getAllBranchManagers,
   getAllTeachers,
+  getSingleTeacher,
+  getSingleTeacherCourses,
+  getSingleTeacherLessons,
   getAllStudents,
   getSingleStudent,
   getSingleStudentLessons,
+  getSingleStudentPayments,
 };

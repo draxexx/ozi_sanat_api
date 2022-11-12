@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Lesson.belongsTo(models.teacher_course, {
         foreignKey: "teacherCourseId",
+        as: "teacherCourse",
       });
 
       Lesson.belongsToMany(models.user, {

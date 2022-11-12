@@ -13,14 +13,23 @@ module.exports = (sequelize, DataTypes) => {
       BranchCourse.belongsToMany(models.user, {
         through: models.teacher_course,
         foreignKey: "branchCourseId",
+        as: "teachers",
+      });
+
+      BranchCourse.belongsToMany(models.user, {
+        through: models.student_payment,
+        foreignKey: "branchCourseId",
+        as: "students",
       });
 
       BranchCourse.belongsTo(models.course, {
         foreignKey: "courseId",
+        as: "course",
       });
 
       BranchCourse.belongsTo(models.branch, {
         foreignKey: "branchId",
+        as: "branch",
       });
     }
   }

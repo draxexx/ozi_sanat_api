@@ -14,6 +14,18 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsToMany(models.branch_course, {
         through: models.teacher_course,
         foreignKey: "teacherId",
+        as: "branchCourses",
+      });
+
+      User.belongsToMany(models.branch_course, {
+        through: models.student_payment,
+        foreignKey: "studentId",
+        as: "studentBranchCourses",
+      });
+
+      User.hasMany(models.teacher_course, {
+        foreignKey: "teacherId",
+        as: "teacherCourses",
       });
 
       User.belongsToMany(models.lesson, {
@@ -22,10 +34,9 @@ module.exports = (sequelize, DataTypes) => {
         as: "lessons",
       });
 
-      User.belongsToMany(models.teacher_course, {
-        through: models.student_payment,
+      User.hasMany(models.student_payment, {
         foreignKey: "studentId",
-        as: "teacherCourses",
+        as: "payments",
       });
     }
   }

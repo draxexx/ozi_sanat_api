@@ -12,6 +12,7 @@ const getAllLessons = async (req, res, next) => {
       include: [
         {
           model: teacher_course,
+          as: "teacherCourse",
           include: [
             {
               model: user,
@@ -23,6 +24,7 @@ const getAllLessons = async (req, res, next) => {
               include: [
                 {
                   model: course,
+                  as: "course",
                 },
               ],
             },
