@@ -7,31 +7,13 @@ dotenv.config();
 
 app.use(express.json());
 
-// routes
-const users = require("./routes/users");
-const courses = require("./routes/courses");
-const branches = require("./routes/branches");
-const branchCourses = require("./routes/branchCourses");
-const teacherCourses = require("./routes/teacherCourses");
-const lessons = require("./routes/lessons");
-const lessonStudents = require("./routes/lessonStudents");
-const homeworks = require("./routes/homeworks");
-const studentPayments = require("./routes/studentPayments");
-const teacherPayments = require("./routes/teacherPayments");
+// routers
+const routers = require("./routes/index");
 
 // middlewares
 
 // routes
-app.use("/users", users);
-app.use("/courses", courses);
-app.use("/branches", branches);
-app.use("/branchCourses", branchCourses);
-app.use("/teacherCourses", teacherCourses);
-app.use("/lessons", lessons);
-app.use("/lessonStudents", lessonStudents);
-app.use("/homeworks", homeworks);
-app.use("/studentPayments", studentPayments);
-app.use("/teacherPayments", teacherPayments);
+app.use("/api/v1", routers);
 
 module.exports = app;
 
