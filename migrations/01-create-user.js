@@ -53,6 +53,14 @@ module.exports = {
             allowNull: true,
             unique: true,
           },
+          birthDate: {
+            type: Sequelize.DATEONLY,
+            allowNull: false,
+          },
+          registerDate: {
+            type: Sequelize.DATEONLY,
+            allowNull: false,
+          },
           active: {
             type: Sequelize.BOOLEAN,
             allowNull: false,

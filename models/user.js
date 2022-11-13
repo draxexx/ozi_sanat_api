@@ -88,6 +88,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
         unique: true,
       },
+      birthDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
+      registerDate: {
+        type: DataTypes.DATEONLY,
+        allowNull: false,
+      },
       active: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

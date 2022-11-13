@@ -175,24 +175,57 @@ const getSingleStudentLessons = async (req, res, next) => {
 
 const getSingleStudentPayments = async (req, res, next) => {
   try {
-    const data = await user.findOne({
+    const student = await user.findOne({
       where: {
         id: req.params.id,
         authority: 4,
       },
+    });
+
+    const data = await student_payment.findAll({
+      where: {
+        studentId: student.id,
+      },
+    });
+
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSingleStudentCourses = async (req, res, next) => {
+  try {
+    const student = await user.findOne({
+      where: {
+        id: req.params.id,
+        authority: 4,
+      },
+    });
+
+    const studentPayments = await student_payment.findAll({
+      where: {
+        studentId: student.id,
+      },
       include: {
-        model: student_payment,
-        as: "payments",
+        model: branch_course,
+        as: "branchCourse",
         include: {
-          model: branch_course,
-          as: "branchCourse",
-          include: {
-            model: course,
-            as: "course",
-          },
+          model: course,
+          as: "course",
         },
       },
     });
+
+    let data = [];
+
+    studentPayments.forEach((element) => {
+      data.push({
+        nextPayment: element.endDate,
+        course: element.branchCourse.course,
+      });
+    });
+
     return res.json(data);
   } catch (error) {
     next(error);
@@ -211,4 +244,5 @@ module.exports = {
   getSingleStudent,
   getSingleStudentLessons,
   getSingleStudentPayments,
+  getSingleStudentCourses,
 };
