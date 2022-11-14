@@ -40,12 +40,12 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
       },
-      studentId: {
+      studentPaymentId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
         references: {
-          model: "user",
+          model: "student_payment",
           key: "id",
         },
         onUpdate: "CASCADE",
