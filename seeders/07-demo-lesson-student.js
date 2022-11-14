@@ -8,11 +8,11 @@ module.exports = {
       [
         {
           lessonId: 1,
-          studentId: 4,
+          studentPaymentId: 1,
         },
         {
           lessonId: 1,
-          studentId: 5,
+          studentPaymentId: 2,
         },
       ],
       {}
