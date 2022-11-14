@@ -9,10 +9,27 @@ module.exports = {
         {
           lessonId: 1,
           studentPaymentId: 1,
+          status: 0,
+        },
+        {
+          lessonId: 2,
+          studentPaymentId: 1,
+          status: 1,
+        },
+        {
+          lessonId: 3,
+          studentPaymentId: 1,
+          status: 2,
+        },
+        {
+          lessonId: 4,
+          studentPaymentId: 1,
+          status: 0,
         },
         {
           lessonId: 1,
           studentPaymentId: 2,
+          status: 0,
         },
       ],
       {}

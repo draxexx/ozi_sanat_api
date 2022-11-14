@@ -3,6 +3,7 @@ const {
   branch_course,
   course,
   lesson,
+  lesson_student,
   user,
   student_payment,
   teacher_course,
@@ -78,7 +79,7 @@ const getSingleTeacher = async (req, res, next) => {
 
 const getSingleTeacherCourses = async (req, res, next) => {
   try {
-    const data = await user.findOne({
+    const teacher = await user.findOne({
       where: {
         id: req.params.id,
         authority: 3,
@@ -86,18 +87,22 @@ const getSingleTeacherCourses = async (req, res, next) => {
       include: {
         model: branch_course,
         as: "branchCourses",
+        through: { as: "teacherCourse", attributes: [] },
         include: [
           {
             model: course,
             as: "course",
           },
-          {
-            model: branch,
-            as: "branch",
-          },
         ],
       },
     });
+
+    let data = [];
+
+    teacher.branchCourses.forEach((element) => {
+      data.push(element.course);
+    });
+
     return res.json(data);
   } catch (error) {
     next(error);
@@ -106,20 +111,71 @@ const getSingleTeacherCourses = async (req, res, next) => {
 
 const getSingleTeacherLessons = async (req, res, next) => {
   try {
-    const data = await user.findOne({
+    const teacher = await user.findOne({
       where: {
         id: req.params.id,
         authority: 3,
       },
+      attributes: [],
       include: {
         model: teacher_course,
         as: "teacherCourses",
+        attributes: ["id"],
         include: {
           model: lesson,
           as: "lessons",
+          include: [
+            {
+              model: teacher_course,
+              as: "teacherCourse",
+              attributes: ["id"],
+              include: {
+                model: branch_course,
+                as: "branchCourse",
+                attributes: ["id"],
+                include: {
+                  model: course,
+                  as: "course",
+                },
+              },
+            },
+            {
+              model: student_payment,
+              as: "studentPayments",
+              through: { attributes: [] },
+
+              attributes: ["id"],
+              include: {
+                model: user,
+                as: "student",
+              },
+            },
+          ],
         },
       },
     });
+
+    let data = [];
+
+    teacher.teacherCourses.forEach((element) => {
+      element.lessons.forEach((lesson) => {
+        let students = [];
+
+        lesson.studentPayments.forEach((studentPayment) => {
+          students.push(studentPayment.student);
+        });
+
+        data.push({
+          id: lesson.id,
+          isCompleted: lesson.isCompleted,
+          date: lesson.date,
+          active: lesson.active,
+          course: lesson.teacherCourse.branchCourse.course,
+          students: students,
+        });
+      });
+    });
+
     return res.json(data);
   } catch (error) {
     next(error);
@@ -207,22 +263,31 @@ const getSingleStudentCourses = async (req, res, next) => {
       where: {
         studentId: student.id,
       },
-      include: {
-        model: branch_course,
-        as: "branchCourse",
-        include: {
-          model: course,
-          as: "course",
+      include: [
+        {
+          model: branch_course,
+          as: "branchCourse",
+          include: {
+            model: course,
+            as: "course",
+          },
         },
-      },
+        {
+          model: lesson,
+          as: "lessons",
+          through: { as: "lessonStudent", attributes: ["status"] },
+        },
+      ],
     });
 
     let data = [];
 
     studentPayments.forEach((element) => {
       data.push({
-        nextPayment: element.endDate,
+        startDate: element.startDate,
+        endDate: element.endDate,
         course: element.branchCourse.course,
+        lessons: element.lessons,
       });
     });
 

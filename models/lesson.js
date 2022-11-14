@@ -15,10 +15,10 @@ module.exports = (sequelize, DataTypes) => {
         as: "teacherCourse",
       });
 
-      Lesson.belongsToMany(models.user, {
+      Lesson.belongsToMany(models.student_payment, {
         through: models.lesson_student,
         foreignKey: "lessonId",
-        as: "students",
+        as: "studentPayments",
       });
     }
   }

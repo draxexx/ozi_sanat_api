@@ -28,12 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         as: "teacherCourses",
       });
 
-      User.belongsToMany(models.lesson, {
-        through: models.lesson_student,
-        foreignKey: "studentId",
-        as: "lessons",
-      });
-
       User.hasMany(models.student_payment, {
         foreignKey: "studentId",
         as: "payments",

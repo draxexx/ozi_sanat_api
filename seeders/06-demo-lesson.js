@@ -10,6 +10,22 @@ module.exports = {
           teacherCourseId: 1,
           date: new Date(),
         },
+        {
+          teacherCourseId: 1,
+          date: new Date(),
+        },
+        {
+          teacherCourseId: 1,
+          date: new Date(),
+        },
+        {
+          teacherCourseId: 1,
+          date: new Date(),
+        },
+        {
+          teacherCourseId: 2,
+          date: new Date(),
+        },
       ],
       {}
     );

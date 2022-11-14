@@ -4,7 +4,7 @@
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "reset": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate",
+    "reset": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
     "migrate": "npx sequelize-cli db:migrate",
     "un-migrate-all": "npx sequelize-cli db:migrate:undo:all",
     "un-migrate-back": "npx sequelize-cli db:migrate:undo",
