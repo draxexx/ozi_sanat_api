@@ -4,6 +4,7 @@ const {
   lesson,
   user,
   student_payment,
+  teacher_course,
 } = require("../models");
 
 const getAllStudents = async (req, res, next) => {
@@ -35,16 +36,62 @@ const getSingleStudent = async (req, res, next) => {
 
 const getSingleStudentLessons = async (req, res, next) => {
   try {
-    const data = await user.findOne({
+    const singleUser = await user.findOne({
       where: {
         id: req.params.id,
         authority: 4,
       },
+      attributes: [],
       include: {
-        model: lesson,
-        as: "lessons",
+        model: student_payment,
+        as: "payments",
+        attributes: ["id"],
+        include: {
+          model: lesson,
+          as: "lessons",
+          attributes: ["id", "date"],
+          through: { attributes: [] },
+          include: {
+            model: teacher_course,
+            as: "teacherCourse",
+            attributes: ["id"],
+            include: [
+              {
+                model: branch_course,
+                as: "branchCourse",
+                attributes: ["id"],
+                include: {
+                  model: course,
+                  as: "course",
+                },
+              },
+              {
+                model: user,
+                as: "teacher",
+              },
+            ],
+          },
+        },
       },
     });
+
+    const payments = singleUser.payments;
+
+    let data = [];
+
+    payments.forEach((element) => {
+      let lessons = element.lessons;
+
+      lessons.forEach((lesson) => {
+        data.push({
+          id: lesson.id,
+          date: lesson.date,
+          course: lesson.teacherCourse.branchCourse.course,
+          teacher: lesson.teacherCourse.teacher,
+        });
+      });
+    });
+
     return res.json(data);
   } catch (error) {
     next(error);
