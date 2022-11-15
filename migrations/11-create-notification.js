@@ -24,6 +24,17 @@ module.exports = {
             onUpdate: "CASCADE",
             onDelete: "RESTRICT",
           },
+          teacherId: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            allowNull: false,
+            references: {
+              model: "user",
+              key: "id",
+            },
+            onUpdate: "CASCADE",
+            onDelete: "RESTRICT",
+          },
           message: {
             type: Sequelize.STRING,
             allowNull: true,
