@@ -36,15 +36,15 @@ module.exports = {
             onDelete: "RESTRICT",
           },
           startDate: {
-            type: Sequelize.DATEONLY,
+            type: Sequelize.DATE,
             allowNull: false,
           },
           endDate: {
-            type: Sequelize.DATEONLY,
+            type: Sequelize.DATE,
             allowNull: false,
           },
           paymentDate: {
-            type: Sequelize.DATEONLY,
+            type: Sequelize.DATE,
             allowNull: false,
           },
           price: {

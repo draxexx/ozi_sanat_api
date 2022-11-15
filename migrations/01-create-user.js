@@ -54,11 +54,11 @@ module.exports = {
             unique: true,
           },
           birthDate: {
-            type: Sequelize.DATEONLY,
+            type: Sequelize.DATE,
             allowNull: false,
           },
           registerDate: {
-            type: Sequelize.DATEONLY,
+            type: Sequelize.DATE,
             allowNull: false,
           },
           active: {

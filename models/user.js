@@ -83,11 +83,11 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       birthDate: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: false,
       },
       registerDate: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: false,
       },
       active: {

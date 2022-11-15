@@ -64,15 +64,15 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "RESTRICT",
       },
       startDate: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: false,
       },
       endDate: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: false,
       },
       paymentDate: {
-        type: DataTypes.DATEONLY,
+        type: DataTypes.DATE,
         allowNull: false,
       },
       price: {

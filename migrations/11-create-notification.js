@@ -43,6 +43,10 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: true,
           },
+          date: {
+            type: Sequelize.DATE,
+            allowNull: true,
+          },
           active: {
             type: Sequelize.BOOLEAN,
             allowNull: false,

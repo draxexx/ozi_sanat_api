@@ -25,7 +25,7 @@ module.exports = {
             onDelete: "RESTRICT",
           },
           date: {
-            type: Sequelize.DATEONLY,
+            type: Sequelize.DATE,
             allowNull: false,
           },
           isCompleted: {
