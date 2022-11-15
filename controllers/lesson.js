@@ -2,8 +2,11 @@ const {
   branch_course,
   course,
   lesson,
+  lesson_student,
   teacher_course,
   user,
+  student_payment,
+  homework,
 } = require("../models");
 
 const getAllLessons = async (req, res, next) => {
@@ -42,6 +45,87 @@ const getAllLessons = async (req, res, next) => {
   }
 };
 
+const getSingleLesson = async (req, res, next) => {
+  try {
+    const singleLesson = await lesson.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: [
+        {
+          model: teacher_course,
+          as: "teacherCourse",
+          attributes: ["id"],
+          include: [
+            {
+              model: user,
+              as: "teacher",
+              attributes: ["firstName", "lastName"],
+            },
+            {
+              model: branch_course,
+              as: "branchCourse",
+              attributes: ["id"],
+              include: {
+                model: course,
+                as: "course",
+              },
+            },
+          ],
+        },
+        {
+          model: lesson_student,
+          as: "lessonStudents",
+          attributes: ["id", "status"],
+          include: [
+            {
+              model: student_payment,
+              as: "studentPayment",
+              attributes: ["id"],
+              include: [
+                {
+                  model: user,
+                  as: "student",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          model: homework,
+          as: "homeworks",
+        },
+      ],
+    });
+
+    let lessonStudents = [];
+
+    singleLesson.lessonStudents.forEach((element) => {
+      lessonStudents.push({
+        id: element.id,
+        status: element.status,
+        student: element.studentPayment.student,
+      });
+    });
+
+    const data = {
+      id: singleLesson.id,
+      isCompleted: singleLesson.isCompleted,
+      date: singleLesson.date,
+      active: singleLesson.active,
+      teacher: singleLesson.teacherCourse.teacher,
+      course: singleLesson.teacherCourse.branchCourse.course,
+      lessonStudents,
+      homeworks: singleLesson.homeworks,
+    };
+
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllLessons,
+  getSingleLesson,
 };
