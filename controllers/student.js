@@ -5,6 +5,7 @@ const {
   user,
   student_payment,
   teacher_course,
+  notification,
 } = require("../models");
 
 const getAllStudents = async (req, res, next) => {
@@ -166,10 +167,38 @@ const getSingleStudentCourses = async (req, res, next) => {
   }
 };
 
+const getSingleStudentNotifications = async (req, res, next) => {
+  try {
+    const student = await user.findOne({
+      where: {
+        id: req.params.id,
+        authority: 4,
+      },
+      attributes: [],
+      include: {
+        model: notification,
+        as: "notifications",
+        include: {
+          model: user,
+          as: "teacher",
+          attributes: ["firstName", "lastName"],
+        },
+      },
+    });
+
+    const data = student.notifications;
+
+    return res.json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllStudents,
   getSingleStudent,
   getSingleStudentLessons,
   getSingleStudentPayments,
   getSingleStudentCourses,
+  getSingleStudentNotifications,
 };
