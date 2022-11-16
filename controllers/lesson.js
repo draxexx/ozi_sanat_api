@@ -39,9 +39,18 @@ const getAllLessons = async (req, res, next) => {
         },
       ],
     });
-    return res.json(data);
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
@@ -119,9 +128,18 @@ const getSingleLesson = async (req, res, next) => {
       homeworks: singleLesson.homeworks,
     };
 
-    return res.json(data);
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
@@ -135,9 +153,18 @@ const createLesson = async (req, res, next) => {
       },
     });
 
-    return res.status(201).json(data);
+    return res.status(201).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 

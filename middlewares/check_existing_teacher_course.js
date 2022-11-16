@@ -13,6 +13,8 @@ const checkExistingTeacherCourse = async (req, res, next) => {
 
   if (data != null) {
     return res.status(403).json({
+      code: res.statusCode,
+      status: "error",
       message:
         "Eşleştirmek istediğiniz kurs ile eğitmen daha önceden eşleştirilmiştir.",
     });

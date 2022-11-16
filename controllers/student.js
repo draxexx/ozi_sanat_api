@@ -17,9 +17,18 @@ const getAllStudents = async (req, res, next) => {
         authority: 4,
       },
     });
-    return res.json(data);
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
@@ -31,9 +40,18 @@ const getSingleStudent = async (req, res, next) => {
         authority: 4,
       },
     });
-    return res.json(data);
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
@@ -95,9 +113,18 @@ const getSingleStudentLessons = async (req, res, next) => {
       });
     });
 
-    return res.json(data);
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
@@ -116,9 +143,18 @@ const getSingleStudentPayments = async (req, res, next) => {
       },
     });
 
-    return res.json(data);
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
@@ -163,9 +199,18 @@ const getSingleStudentCourses = async (req, res, next) => {
       });
     });
 
-    return res.json(data);
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
@@ -190,9 +235,18 @@ const getSingleStudentNotifications = async (req, res, next) => {
 
     const data = student.notifications;
 
-    return res.json(data);
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
@@ -217,9 +271,18 @@ const createStudent = async (req, res, next) => {
       },
     });
 
-    return res.status(201).json(data);
+    return res.status(201).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 

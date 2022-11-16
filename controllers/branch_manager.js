@@ -8,9 +8,18 @@ const getAllBranchManagers = async (req, res, next) => {
         authority: 2,
       },
     });
-    return res.json(data);
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
@@ -35,9 +44,18 @@ const createBranchManager = async (req, res, next) => {
       },
     });
 
-    return res.status(201).json(data);
+    return res.status(201).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
   } catch (error) {
     next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
   }
 };
 
