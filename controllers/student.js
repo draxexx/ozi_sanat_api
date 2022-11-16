@@ -8,6 +8,8 @@ const {
   notification,
 } = require("../models");
 
+const { encryptString } = require("../helpers/crypt_string");
+
 const getAllStudents = async (req, res, next) => {
   try {
     const data = await user.findAll({
@@ -194,6 +196,33 @@ const getSingleStudentNotifications = async (req, res, next) => {
   }
 };
 
+const createStudent = async (req, res, next) => {
+  try {
+    const createdStudent = await user.create({
+      email: req.body.email,
+      password: encryptString(req.body.password),
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      gender: req.body.gender,
+      phone: req.body.phone,
+      authority: req.body.authority,
+      image: req.body.image,
+      birthDate: req.body.birthDate,
+      registerDate: req.body.registerDate,
+    });
+
+    const data = await user.findOne({
+      where: {
+        id: createdStudent.id,
+      },
+    });
+
+    return res.status(201).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllStudents,
   getSingleStudent,
@@ -201,4 +230,5 @@ module.exports = {
   getSingleStudentPayments,
   getSingleStudentCourses,
   getSingleStudentNotifications,
+  createStudent,
 };

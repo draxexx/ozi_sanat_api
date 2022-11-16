@@ -12,19 +12,19 @@ module.exports = {
         },
         {
           teacherCourseId: 1,
-          date: new Date(),
+          date: new Date(2022, 10, 8, 18, 33),
         },
         {
           teacherCourseId: 1,
-          date: new Date(),
+          date: new Date(2022, 10, 15, 18, 33),
         },
         {
           teacherCourseId: 1,
-          date: new Date(),
+          date: new Date(2022, 10, 22, 18, 33),
         },
         {
           teacherCourseId: 2,
-          date: new Date(),
+          date: new Date(2022, 10, 29, 18, 33),
         },
       ],
       {}
