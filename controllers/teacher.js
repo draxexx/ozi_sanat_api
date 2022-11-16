@@ -221,6 +221,11 @@ const createTeacher = async (req, res, next) => {
       registerDate: req.body.registerDate,
     });
 
+    await teacher_course.create({
+      branchCourseId: req.body.branchCourseId,
+      teacherId: createdTeacher.id,
+    });
+
     const data = await user.findOne({
       where: {
         id: createdTeacher.id,

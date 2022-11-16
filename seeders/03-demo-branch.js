@@ -8,9 +8,11 @@ module.exports = {
       [
         {
           title: "Ozi Sanat - 1",
+          registerDate: new Date(),
         },
         {
           title: "Ozi Sanat - 2",
+          registerDate: new Date(),
         },
       ],
       {}

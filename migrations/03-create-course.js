@@ -26,6 +26,10 @@ module.exports = {
             type: Sequelize.DOUBLE(6, 2),
             allowNull: false,
           },
+          registerDate: {
+            type: Sequelize.DATE,
+            allowNull: false,
+          },
           active: {
             type: Sequelize.BOOLEAN,
             allowNull: false,

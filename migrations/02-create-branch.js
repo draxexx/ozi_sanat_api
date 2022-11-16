@@ -18,6 +18,10 @@ module.exports = {
             allowNull: false,
             unique: true,
           },
+          registerDate: {
+            type: Sequelize.DATE,
+            allowNull: false,
+          },
           active: {
             type: Sequelize.BOOLEAN,
             allowNull: false,

@@ -52,6 +52,28 @@ const getAllCourses = async (req, res, next) => {
   }
 };
 
+const createCourse = async (req, res, next) => {
+  try {
+    const createdCourse = await course.create({
+      title: req.body.title,
+      image: req.body.image,
+      price: req.body.price,
+      registerDate: req.body.registerDate,
+    });
+
+    const data = await course.findOne({
+      where: {
+        id: createdCourse.id,
+      },
+    });
+
+    return res.status(201).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllCourses,
+  createCourse,
 };

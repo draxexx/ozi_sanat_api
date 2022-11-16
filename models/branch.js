@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
+      registerDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
       active: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

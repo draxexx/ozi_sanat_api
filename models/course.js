@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DOUBLE(6, 2),
         allowNull: false,
       },
+      registerDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
       active: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
