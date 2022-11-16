@@ -125,7 +125,24 @@ const getSingleLesson = async (req, res, next) => {
   }
 };
 
+const createLesson = async (req, res, next) => {
+  try {
+    const createdLesson = await lesson.create(req.body);
+
+    const data = await lesson.findOne({
+      where: {
+        id: createdLesson.id,
+      },
+    });
+
+    return res.status(201).json(data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllLessons,
   getSingleLesson,
+  createLesson,
 };
