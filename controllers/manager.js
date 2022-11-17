@@ -59,7 +59,46 @@ const createManager = async (req, res, next) => {
   }
 };
 
+const updateManager = async (req, res, next) => {
+  try {
+    await user.update(
+      {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phone: req.body.phone,
+        birthDate: req.body.birthDate,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+
+    const data = await user.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      message: "Güncelleme işlemi başarıyla gerçekleştirildi.",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: "Güncelleme sırasında hata meydana geldi.",
+    });
+  }
+};
+
 module.exports = {
   getAllManagers,
   createManager,
+  updateManager,
 };

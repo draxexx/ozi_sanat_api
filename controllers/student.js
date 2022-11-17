@@ -286,6 +286,43 @@ const createStudent = async (req, res, next) => {
   }
 };
 
+const updateStudent = async (req, res, next) => {
+  try {
+    await user.update(
+      {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        phone: req.body.phone,
+        birthDate: req.body.birthDate,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+
+    const data = await user.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
+  }
+};
+
 module.exports = {
   getAllStudents,
   getSingleStudent,
@@ -294,4 +331,5 @@ module.exports = {
   getSingleStudentCourses,
   getSingleStudentNotifications,
   createStudent,
+  updateStudent,
 };
