@@ -30,6 +30,7 @@ const {
   getSingleStudentNotifications,
   createStudent,
   updateStudent,
+  createStudentLessons,
 } = require("../controllers/student");
 
 router.get("/", getAllUsers);
@@ -53,6 +54,7 @@ router.get("/teachers/:id/students", getSingleTeacherStudents);
 
 router.get("/students", getAllStudents);
 router.post("/students", createStudent);
+router.post("/students/:id/lessons", createStudentLessons);
 router.put("/students/:id", updateStudent);
 router.get("/students/:id", getSingleStudent);
 router.get("/students/:id/lessons", getSingleStudentLessons);

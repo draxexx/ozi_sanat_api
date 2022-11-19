@@ -1,4 +1,4 @@
-const { branch_course, course, user } = require("../models");
+const { branch_course, course, user, teacher_course } = require("../models");
 
 const getAllCourses = async (req, res, next) => {
   try {
@@ -76,15 +76,48 @@ const createCourse = async (req, res, next) => {
       },
     });
 
-    return res
-      .status(201)
-      .json({ code: res.statusCode, status: "success", data: data });
+    return res.status(201).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "Kurs kaydı başarıyla gerçekleştirildi.",
+    });
   } catch (error) {
     next(error);
     return res.status(404).json({
       code: res.statusCode,
       status: "error",
-      message: error,
+      message:
+        "Kurs kaydederken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
+const getAllCourseTeachers = async (req, res, next) => {
+  try {
+    const data = await teacher_course.findAll({
+      where: {
+        branchCourseId: req.params.id,
+      },
+      include: {
+        model: user,
+        as: "teacher",
+      },
+    });
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      message: "Kurs eğitmenleri başarıyla getirildi.",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Kurs eğitmenleri getirilirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
     });
   }
 };
@@ -92,4 +125,5 @@ const createCourse = async (req, res, next) => {
 module.exports = {
   getAllCourses,
   createCourse,
+  getAllCourseTeachers,
 };

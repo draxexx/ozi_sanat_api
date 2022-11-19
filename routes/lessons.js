@@ -7,7 +7,7 @@ const {
   createLesson,
 } = require("../controllers/lesson");
 
-router.get("/", createLesson);
+router.get("/", getAllLessons);
 router.post("/", createLesson);
 router.get("/:id", getSingleLesson);
 

@@ -6,6 +6,7 @@ const {
   student_payment,
   teacher_course,
   notification,
+  lesson_student,
 } = require("../models");
 
 const { encryptString } = require("../helpers/crypt_string");
@@ -259,8 +260,7 @@ const createStudent = async (req, res, next) => {
       lastName: req.body.lastName,
       gender: req.body.gender,
       phone: req.body.phone,
-      authority: req.body.authority,
-      image: req.body.image,
+      authority: 4,
       birthDate: req.body.birthDate,
       registerDate: req.body.registerDate,
     });
@@ -274,6 +274,7 @@ const createStudent = async (req, res, next) => {
     return res.status(201).json({
       code: res.statusCode,
       status: "success",
+      message: "Öğrenci kaydı başarıyla gerçekleştirildi.",
       data: data,
     });
   } catch (error) {
@@ -281,7 +282,8 @@ const createStudent = async (req, res, next) => {
     return res.status(404).json({
       code: res.statusCode,
       status: "error",
-      message: error,
+      message:
+        "Öğrenci kaydederken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
     });
   }
 };
@@ -323,6 +325,71 @@ const updateStudent = async (req, res, next) => {
   }
 };
 
+const createStudentLessons = async (req, res, next) => {
+  try {
+    const createdStudentPayment = await student_payment.create({
+      studentId: req.params.id,
+      branchCourseId: req.body.studentPayment.branchCourseId,
+      startDate: req.body.studentPayment.startDate,
+      endDate: req.body.studentPayment.endDate,
+      paymentDate: req.body.studentPayment.paymentDate,
+      price: req.body.studentPayment.price,
+      compensationAmount: 1,
+    });
+
+    let createdLessons = [];
+
+    req.body.dates.forEach(async (element) => {
+      const createdLesson = await lesson.create({
+        teacherCourseId: req.body.teacherCourseId,
+        date: element,
+      });
+
+      const createdLessonStudent = await lesson_student.create({
+        lessonId: createdLesson.id,
+        studentPaymentId: createdStudentPayment.id,
+      });
+
+      createdLessons.push({
+        createdLesson,
+        createdLessonStudent,
+      });
+    });
+
+    const data = {
+      createdStudentPayment,
+      createdLessons,
+    };
+
+    // const data = await user.findOne({
+    //   where: {
+    //     id: createdStudent.id,
+    //   },
+    // });
+
+    return res.status(201).json({
+      code: res.statusCode,
+      status: "success",
+      message: "Öğrenci ders kaydı başarıyla gerçekleştirildi.",
+      data: data,
+    });
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "Öğrenci kaydı başarıyla gerçekleştirildi.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Öğrenci dersi kaydederken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 module.exports = {
   getAllStudents,
   getSingleStudent,
@@ -332,4 +399,5 @@ module.exports = {
   getSingleStudentNotifications,
   createStudent,
   updateStudent,
+  createStudentLessons,
 };

@@ -33,10 +33,10 @@ const getAllLessons = async (req, res, next) => {
             },
           ],
         },
-        {
-          model: user,
-          as: "students",
-        },
+        // {
+        //   model: user,
+        //   as: "students",
+        // },
       ],
     });
     return res.json({

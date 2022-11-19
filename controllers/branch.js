@@ -1,4 +1,4 @@
-const { branch } = require("../models");
+const { branch, branch_course, course } = require("../models");
 
 const getAllBranches = async (req, res, next) => {
   try {
@@ -44,7 +44,37 @@ const createBranch = async (req, res, next) => {
   }
 };
 
+const getAllBranchCourses = async (req, res, next) => {
+  try {
+    const data = await branch_course.findAll({
+      where: {
+        branchId: req.params.id,
+      },
+      include: {
+        model: course,
+        as: "course",
+      },
+    });
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      message: "Şube kursları başarıyla getirildi.",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Şube kursları getirilirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 module.exports = {
   getAllBranches,
   createBranch,
+  getAllBranchCourses,
 };

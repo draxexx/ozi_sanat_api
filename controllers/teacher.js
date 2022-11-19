@@ -260,15 +260,9 @@ const createTeacher = async (req, res, next) => {
       lastName: req.body.lastName,
       gender: req.body.gender,
       phone: req.body.phone,
-      authority: req.body.authority,
-      image: req.body.image,
+      authority: 3,
       birthDate: req.body.birthDate,
       registerDate: req.body.registerDate,
-    });
-
-    await teacher_course.create({
-      branchCourseId: req.body.branchCourseId,
-      teacherId: createdTeacher.id,
     });
 
     const data = await user.findOne({
@@ -280,6 +274,7 @@ const createTeacher = async (req, res, next) => {
     return res.status(201).json({
       code: res.statusCode,
       status: "success",
+      message: "Eğitmen kaydı başarıyla gerçekleştirildi.",
       data: data,
     });
   } catch (error) {
@@ -287,7 +282,8 @@ const createTeacher = async (req, res, next) => {
     return res.status(404).json({
       code: res.statusCode,
       status: "error",
-      message: error,
+      message:
+        "Eğitmen kaydederken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
     });
   }
 };
