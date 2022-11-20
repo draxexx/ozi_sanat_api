@@ -190,9 +190,19 @@ const getSingleTeacherStudents = async (req, res, next) => {
     const teacher = await user.findOne({
       where: {
         id: req.params.id,
-        authority: 3,
+        authority: [1, 2, 3],
       },
       attributes: [],
+      order: [
+        [
+          "teacherCourses",
+          "lessons",
+          "studentPayments",
+          "student",
+          "firstName",
+          "ASC",
+        ],
+      ],
       include: {
         model: teacher_course,
         as: "teacherCourses",

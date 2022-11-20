@@ -90,7 +90,7 @@ const getSingleLesson = async (req, res, next) => {
             {
               model: student_payment,
               as: "studentPayment",
-              attributes: ["id"],
+              attributes: ["id", "compensationAmount"],
               include: [
                 {
                   model: user,
@@ -111,6 +111,10 @@ const getSingleLesson = async (req, res, next) => {
 
     singleLesson.lessonStudents.forEach((element) => {
       lessonStudents.push({
+        studentPayment: {
+          id: element.studentPayment.id,
+          compensationAmount: element.studentPayment.compensationAmount,
+        },
         id: element.id,
         status: element.status,
         student: element.studentPayment.student,

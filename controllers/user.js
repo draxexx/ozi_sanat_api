@@ -1,6 +1,5 @@
 const { user } = require("../models");
 const { decryptString, encryptString } = require("../helpers/crypt_string");
-const sequelize = require("sequelize");
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -100,6 +99,8 @@ const updatePassword = async (req, res, next) => {
         id: req.params.id,
       },
     });
+
+    console.log(decryptString(data.password));
 
     if (data != null) {
       const password = decryptString(data.password);

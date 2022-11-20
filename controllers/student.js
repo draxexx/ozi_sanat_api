@@ -67,6 +67,7 @@ const getSingleStudentLessons = async (req, res, next) => {
         id: req.params.id,
         authority: 4,
       },
+      order: [["payments", "lessons", "date", "ASC"]],
       attributes: [],
       include: {
         model: student_payment,
@@ -199,6 +200,7 @@ const getSingleStudentCourses = async (req, res, next) => {
       data.push({
         startDate: element.startDate,
         endDate: element.endDate,
+        compensationAmount: element.compensationAmount,
         course: element.branchCourse.course,
         lessons: element.lessons,
       });
