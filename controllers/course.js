@@ -3,6 +3,7 @@ const { branch_course, course, user, teacher_course } = require("../models");
 const getAllCourses = async (req, res, next) => {
   try {
     const courses = await course.findAll({
+      order: [["title", "ASC"]],
       include: [
         {
           model: branch_course,

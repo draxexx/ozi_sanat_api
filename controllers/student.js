@@ -17,6 +17,10 @@ const getAllStudents = async (req, res, next) => {
       where: {
         authority: 4,
       },
+      order: [
+        ["firstName", "ASC"],
+        ["lastName", "ASC"],
+      ],
     });
     return res.json({
       code: res.statusCode,

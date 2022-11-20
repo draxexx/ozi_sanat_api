@@ -16,6 +16,10 @@ const getAllTeachers = async (req, res, next) => {
       where: {
         authority: [1, 2, 3],
       },
+      order: [
+        ["firstName", "ASC"],
+        ["lastName", "ASC"],
+      ],
     });
     return res.json({
       code: res.statusCode,
@@ -60,7 +64,7 @@ const getSingleTeacherCourses = async (req, res, next) => {
     const teacher = await user.findOne({
       where: {
         id: req.params.id,
-        authority: 3,
+        authority: [1, 2, 3],
       },
       include: {
         model: branch_course,
@@ -85,13 +89,15 @@ const getSingleTeacherCourses = async (req, res, next) => {
       code: res.statusCode,
       status: "success",
       data: data,
+      message: "Eğitmen kursları başarıyla getirildi",
     });
   } catch (error) {
     next(error);
     return res.status(404).json({
       code: res.statusCode,
       status: "error",
-      message: error,
+      message:
+        "Eğitmen kurslarını getirirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
     });
   }
 };
@@ -101,9 +107,10 @@ const getSingleTeacherLessons = async (req, res, next) => {
     const teacher = await user.findOne({
       where: {
         id: req.params.id,
-        authority: 3,
+        authority: [1, 2, 3],
       },
       attributes: [],
+      order: [["teacherCourses", "lessons", "date", "ASC"]],
       include: {
         model: teacher_course,
         as: "teacherCourses",

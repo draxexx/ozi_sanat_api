@@ -1,5 +1,6 @@
 const { user } = require("../models");
 const { decryptString, encryptString } = require("../helpers/crypt_string");
+const sequelize = require("sequelize");
 
 const getAllUsers = async (req, res, next) => {
   try {
@@ -103,7 +104,7 @@ const updatePassword = async (req, res, next) => {
     if (data != null) {
       const password = decryptString(data.password);
 
-      if (password == red.body.oldPassword) {
+      if (password == req.body.oldPassword) {
         await user.update(
           {
             password: encryptString(req.body.password),

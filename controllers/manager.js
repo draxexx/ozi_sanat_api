@@ -7,6 +7,10 @@ const getAllManagers = async (req, res, next) => {
       where: {
         authority: 1,
       },
+      order: [
+        ["firstName", "ASC"],
+        ["lastName", "ASC"],
+      ],
     });
     return res.json({
       code: res.statusCode,
