@@ -19,6 +19,18 @@ module.exports = {
           courseId: 3,
         },
         {
+          branchId: 1,
+          courseId: 4,
+        },
+        {
+          branchId: 1,
+          courseId: 5,
+        },
+        {
+          branchId: 1,
+          courseId: 6,
+        },
+        {
           branchId: 2,
           courseId: 2,
         },

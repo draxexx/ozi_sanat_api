@@ -14,7 +14,7 @@ const getAllTeachers = async (req, res, next) => {
   try {
     const data = await user.findAll({
       where: {
-        authority: 3,
+        authority: [1, 2, 3],
       },
     });
     return res.json({

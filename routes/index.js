@@ -2,6 +2,10 @@ const express = require("express");
 
 // routers
 const users = require("./users");
+const managers = require("./managers");
+const branchManagers = require("./branch_managers");
+const teachers = require("./teachers");
+const students = require("./students");
 const courses = require("./courses");
 const lessons = require("./lessons");
 const branches = require("./branches");
@@ -16,6 +20,10 @@ const notifications = require("./notifications");
 const router = express.Router();
 
 router.use("/users", users);
+router.use("/managers", managers);
+router.use("/branchmanagers", branchManagers);
+router.use("/teachers", teachers);
+router.use("/students", students);
 router.use("/courses", courses);
 router.use("/lessons", lessons);
 router.use("/branches", branches);

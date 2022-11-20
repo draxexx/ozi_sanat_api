@@ -21,7 +21,10 @@ const getAllTeacherCourses = async (req, res, next) => {
 
 const createTeacherCourse = async (req, res, next) => {
   try {
-    const createdTeacherCourse = await teacher_course.create(req.body);
+    const createdTeacherCourse = await teacher_course.create({
+      branchCourseId: req.body.branchCourseId,
+      teacherId: req.body.teacherId,
+    });
 
     const data = await teacher_course.findOne({
       where: {

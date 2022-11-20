@@ -7,12 +7,12 @@ module.exports = {
       "teacher_course",
       [
         {
-          branchCourseId: 1,
+          branchCourseId: 7,
           teacherId: 3,
         },
         {
-          branchCourseId: 3,
-          teacherId: 3,
+          branchCourseId: 1,
+          teacherId: 2,
         },
       ],
       {}

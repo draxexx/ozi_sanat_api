@@ -7,11 +7,11 @@ module.exports = {
       "branch",
       [
         {
-          title: "Ozi Sanat - 1",
+          title: "Çaybağları",
           registerDate: new Date(),
         },
         {
-          title: "Ozi Sanat - 2",
+          title: "Anayurt",
           registerDate: new Date(),
         },
       ],
