@@ -5,7 +5,7 @@ const port = 3000;
 
 dotenv.config();
 
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
 
 // routers
 const routers = require("./routes/index");
