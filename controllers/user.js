@@ -100,8 +100,6 @@ const updatePassword = async (req, res, next) => {
       },
     });
 
-    console.log(decryptString(data.password));
-
     if (data != null) {
       const password = decryptString(data.password);
 
@@ -150,9 +148,46 @@ const updatePassword = async (req, res, next) => {
   }
 };
 
+const resetPassword = async (req, res, next) => {
+  try {
+    await user.update(
+      {
+        password: encryptString(`ozisanat${req.body.firstName}`),
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+
+    const data = await user.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "Parola sıfırlama işlemi başarıyla gerçekleştirildi.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Parola sıfırlama işlemi sırasında hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 module.exports = {
   getAllUsers,
   login,
   getSingleUser,
   updatePassword,
+  resetPassword,
 };

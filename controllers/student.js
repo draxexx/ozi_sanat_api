@@ -49,13 +49,15 @@ const getSingleStudent = async (req, res, next) => {
       code: res.statusCode,
       status: "success",
       data: data,
+      message: "Aranılan öğrenci başarıyla getirildi.",
     });
   } catch (error) {
     next(error);
     return res.status(404).json({
       code: res.statusCode,
       status: "error",
-      message: error,
+      message:
+        "Öğrenci getirirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
     });
   }
 };
@@ -320,13 +322,14 @@ const updateStudent = async (req, res, next) => {
       code: res.statusCode,
       status: "success",
       data: data,
+      message: "Güncelleme işlemi başarıyla gerçekleştirildi.",
     });
   } catch (error) {
     next(error);
     return res.status(404).json({
       code: res.statusCode,
       status: "error",
-      message: error,
+      message: "Güncelleme sırasında hata meydana geldi.",
     });
   }
 };
@@ -378,12 +381,6 @@ const createStudentLessons = async (req, res, next) => {
       status: "success",
       message: "Öğrenci ders kaydı başarıyla gerçekleştirildi.",
       data: data,
-    });
-    return res.status(200).json({
-      code: res.statusCode,
-      status: "success",
-      data: data,
-      message: "Öğrenci kaydı başarıyla gerçekleştirildi.",
     });
   } catch (error) {
     next(error);

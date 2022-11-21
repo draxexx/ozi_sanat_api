@@ -172,8 +172,45 @@ const createLesson = async (req, res, next) => {
   }
 };
 
+const completeLesson = async (req, res, next) => {
+  try {
+    await lesson.update(
+      {
+        active: false,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+
+    const data = await lesson.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "Ders başarıyla tamamlandı.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Ders tamamlama işlemi sırasında hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 module.exports = {
   getAllLessons,
   getSingleLesson,
   createLesson,
+  completeLesson,
 };

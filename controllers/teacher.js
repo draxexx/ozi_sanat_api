@@ -41,20 +41,22 @@ const getSingleTeacher = async (req, res, next) => {
     const data = await user.findOne({
       where: {
         id: req.params.id,
-        authority: 3,
+        authority: [1, 2, 3],
       },
     });
     return res.json({
       code: res.statusCode,
       status: "success",
       data: data,
+      message: "Aranılan eğitmen başarıyla getirildi.",
     });
   } catch (error) {
     next(error);
     return res.status(404).json({
       code: res.statusCode,
       status: "error",
-      message: error,
+      message:
+        "Eğitmen getirirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
     });
   }
 };

@@ -21,7 +21,10 @@ const getAllBranchCourses = async (req, res, next) => {
 
 const createBranchCourse = async (req, res, next) => {
   try {
-    const createdBranchCourse = await branch_course.create(req.body);
+    const createdBranchCourse = await branch_course.create({
+      branchId: req.body.branchId,
+      courseId: req.body.courseId,
+    });
 
     const data = await branch_course.findOne({
       where: {
@@ -43,13 +46,15 @@ const createBranchCourse = async (req, res, next) => {
       code: res.statusCode,
       status: "success",
       data: data,
+      message: "Kurs şube ilişkisiğ başarıyla gerçekleştirildi.",
     });
   } catch (error) {
     next(error);
     return res.status(404).json({
       code: res.statusCode,
       status: "error",
-      message: error,
+      message:
+        "Kurs şube ilişkisi gerçekleştirilirken hata meydana geldi, lütfen tekrar deneyiniz.",
     });
   }
 };

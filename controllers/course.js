@@ -1,4 +1,10 @@
-const { branch_course, course, user, teacher_course } = require("../models");
+const {
+  branch,
+  branch_course,
+  course,
+  user,
+  teacher_course,
+} = require("../models");
 
 const getAllCourses = async (req, res, next) => {
   try {
@@ -58,6 +64,35 @@ const getAllCourses = async (req, res, next) => {
       code: res.statusCode,
       status: "error",
       message: error,
+    });
+  }
+};
+
+const getSingleCourse = async (req, res, next) => {
+  try {
+    const data = await course.findOne({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        model: branch,
+        as: "branches",
+      },
+    });
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "Kurs başarıyla getirildi.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Kurs getirilirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
     });
   }
 };
@@ -127,4 +162,5 @@ module.exports = {
   getAllCourses,
   createCourse,
   getAllCourseTeachers,
+  getSingleCourse,
 };
