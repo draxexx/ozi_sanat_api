@@ -1,5 +1,13 @@
-const { user } = require("../models");
+const {
+  branch_course,
+  course,
+  user,
+  teacher_course,
+  lesson,
+  student_payment,
+} = require("../models");
 const { encryptString } = require("../helpers/crypt_string");
+const { findUniqueItem } = require("../helpers/find_unique_in_list");
 
 const getAllBranchManagers = async (req, res, next) => {
   try {
