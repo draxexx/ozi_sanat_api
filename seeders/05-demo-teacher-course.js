@@ -14,6 +14,10 @@ module.exports = {
           branchCourseId: 1,
           teacherId: 2,
         },
+        {
+          branchCourseId: 3,
+          teacherId: 1,
+        },
       ],
       {}
     );
