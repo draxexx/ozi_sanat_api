@@ -1,8 +1,5 @@
 const { user } = require("../models");
 const { decryptString, encryptString } = require("../helpers/crypt_string");
-// const fs = require("fs");
-// const path = require("path");
-// var multer = require("multer");
 
 const getAllUsers = async (req, res, next) => {
   try {
