@@ -1,0 +1,26 @@
+const express = require("express");
+const router = express.Router();
+
+const {
+  getAllStudents,
+  getSingleStudent,
+  getSingleStudentLessons,
+  getSingleStudentPayments,
+  getSingleStudentCourses,
+  getSingleStudentNotifications,
+  createStudent,
+  updateStudent,
+  createStudentLessons,
+} = require("../controllers/student");
+
+router.get("/", getAllStudents);
+router.post("/", createStudent);
+router.post("/:id/lessons", createStudentLessons);
+router.put("/:id", updateStudent);
+router.get("/:id", getSingleStudent);
+router.get("/:id/lessons", getSingleStudentLessons);
+router.get("/:id/payments", getSingleStudentPayments);
+router.get("/:id/courses", getSingleStudentCourses);
+router.get("/:id/notifications", getSingleStudentNotifications);
+
+module.exports = router;

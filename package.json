@@ -1,16 +1,18 @@
 {
-  "name": "ozisanat-api",
+  "name": "ozi-sanat-api",
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
-    "reset": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate",
+    "reset": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
     "migrate": "npx sequelize-cli db:migrate",
     "un-migrate-all": "npx sequelize-cli db:migrate:undo:all",
     "un-migrate-back": "npx sequelize-cli db:migrate:undo",
     "seed-all": "npx sequelize-cli db:seed:all",
     "seed-undo-all": "npx sequelize-cli db:seed:undo:all",
     "generate-model": "npx sequelize-cli model:generate --name User --attributes id:integer,firstName:string,lastName:string,email:string",
+    "generate-seed": "npx sequelize-cli seed:generate --name demo-user",
+    "deploy": "serverless deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
@@ -19,9 +21,13 @@
     "sequelize-cli": "^6.5.2"
   },
   "dependencies": {
+    "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "ftp": "^0.3.10",
+    "luxon": "^3.1.0",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.25.5"
+    "sequelize": "^6.25.5",
+    "serverless-http": "^3.1.0"
   }
 }
