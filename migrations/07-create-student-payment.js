@@ -5,7 +5,7 @@ module.exports = {
     const transaction = await queryInterface.sequelize.transaction();
     try {
       await queryInterface.createTable(
-        "user",
+        "student_payment",
         {
           id: {
             type: Sequelize.INTEGER,
@@ -13,52 +13,46 @@ module.exports = {
             primaryKey: true,
             autoIncrement: true,
           },
-          email: {
-            type: Sequelize.STRING,
-            allowNull: false,
-            unique: true,
-          },
-          password: {
-            type: Sequelize.STRING,
-            allowNull: false,
-          },
-          firstName: {
-            type: Sequelize.STRING,
-            allowNull: false,
-          },
-          lastName: {
-            type: Sequelize.STRING,
-            allowNull: false,
-          },
-          gender: {
+          studentId: {
             type: Sequelize.INTEGER,
+            primaryKey: true,
             allowNull: false,
-            defaultValue: 1,
+            references: {
+              model: "user",
+              key: "id",
+            },
+            onUpdate: "CASCADE",
+            onDelete: "RESTRICT",
           },
-          phone: {
-            type: Sequelize.STRING,
-            allowNull: false,
-          },
-          authority: {
+          branchCourseId: {
             type: Sequelize.INTEGER,
+            primaryKey: true,
             allowNull: false,
+            references: {
+              model: "branch_course",
+              key: "id",
+            },
+            onUpdate: "CASCADE",
+            onDelete: "RESTRICT",
           },
-          image: {
-            type: Sequelize.STRING,
-            allowNull: true,
-            defaultValue: "",
-          },
-          notificationId: {
-            type: Sequelize.STRING,
-            allowNull: true,
-            unique: true,
-          },
-          birthDate: {
+          startDate: {
             type: Sequelize.DATE,
             allowNull: false,
           },
-          registerDate: {
+          endDate: {
             type: Sequelize.DATE,
+            allowNull: false,
+          },
+          paymentDate: {
+            type: Sequelize.DATE,
+            allowNull: false,
+          },
+          price: {
+            type: Sequelize.DOUBLE,
+            allowNull: false,
+          },
+          compensationAmount: {
+            type: Sequelize.INTEGER,
             allowNull: false,
           },
           active: {
@@ -77,6 +71,6 @@ module.exports = {
     }
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("user");
+    await queryInterface.dropTable("student_payment");
   },
 };
