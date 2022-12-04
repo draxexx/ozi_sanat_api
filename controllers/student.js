@@ -179,6 +179,7 @@ const getSingleStudentCourses = async (req, res, next) => {
       where: {
         studentId: student.id,
       },
+      order: [["lessons", "date", "ASC"]],
       include: [
         {
           model: branch_course,
