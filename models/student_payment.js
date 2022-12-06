@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
 
       StudentPayment.hasMany(models.lesson_student, {
         foreignKey: "studentPaymentId",
-        as: "lessonStudent",
+        as: "lessonStudents",
       });
 
       StudentPayment.belongsTo(models.user, {

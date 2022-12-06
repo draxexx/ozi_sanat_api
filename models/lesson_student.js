@@ -14,10 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "studentPaymentId",
         as: "studentPayment",
       });
-      // LessonStudent.belongsTo(models.lesson, {
-      //   foreignKey: "lessonId",
-      //   as: "lessonStudent",
-      // });
+      LessonStudent.belongsTo(models.lesson, {
+        foreignKey: "lessonId",
+        as: "lesson",
+      });
     }
   }
   LessonStudent.init(

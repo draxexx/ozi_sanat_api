@@ -69,36 +69,40 @@ const getSingleStudentLessons = async (req, res, next) => {
         id: req.params.id,
         authority: 4,
       },
-      order: [["payments", "lessons", "date", "ASC"]],
+      order: [["payments", "lessonStudents", "lesson", "date", "ASC"]],
       attributes: [],
       include: {
         model: student_payment,
         as: "payments",
         attributes: ["id"],
         include: {
-          model: lesson,
-          as: "lessons",
-          attributes: ["id", "date"],
-          through: { attributes: [] },
+          model: lesson_student,
+          as: "lessonStudents",
+          attributes: ["id", "status"],
           include: {
-            model: teacher_course,
-            as: "teacherCourse",
-            attributes: ["id"],
-            include: [
-              {
-                model: branch_course,
-                as: "branchCourse",
-                attributes: ["id"],
-                include: {
-                  model: course,
-                  as: "course",
+            model: lesson,
+            as: "lesson",
+            attributes: ["id", "date"],
+            include: {
+              model: teacher_course,
+              as: "teacherCourse",
+              attributes: ["id"],
+              include: [
+                {
+                  model: branch_course,
+                  as: "branchCourse",
+                  attributes: ["id"],
+                  include: {
+                    model: course,
+                    as: "course",
+                  },
                 },
-              },
-              {
-                model: user,
-                as: "teacher",
-              },
-            ],
+                {
+                  model: user,
+                  as: "teacher",
+                },
+              ],
+            },
           },
         },
       },
@@ -109,17 +113,22 @@ const getSingleStudentLessons = async (req, res, next) => {
     let data = [];
 
     payments.forEach((element) => {
-      let lessons = element.lessons;
+      let lessonStudents = element.lessonStudents;
 
-      lessons.forEach((lesson) => {
+      lessonStudents.forEach((lessonStudent) => {
         data.push({
-          id: lesson.id,
-          date: lesson.date,
-          course: lesson.teacherCourse.branchCourse.course,
-          teacher: lesson.teacherCourse.teacher,
+          id: lessonStudent.lesson.id,
+          date: lessonStudent.lesson.date,
+          lessonStudent: {
+            status: lessonStudent.status,
+          },
+          course: lessonStudent.lesson.teacherCourse.branchCourse.course,
+          teacher: lessonStudent.lesson.teacherCourse.teacher,
         });
       });
     });
+
+    data.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
 
     return res.json({
       code: res.statusCode,
