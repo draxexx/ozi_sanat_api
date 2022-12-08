@@ -41,17 +41,17 @@ module.exports = {
           registerDate: new Date(),
           authority: 2,
         },
-        // {
-        //   email: "farukgocer38@gmail.com",
-        //   password: encryptString("ozisanatToprak"),
-        //   firstName: "Toprak",
-        //   lastName: "Göçer",
-        //   gender: 1,
-        //   phone: "1111111111",
-        //   birthDate: new Date(1990, 1, 5),
-        //   registerDate: new Date(),
-        //   authority: 4,
-        // },
+        {
+          email: "test@hotmail.com",
+          password: encryptString("test123456"),
+          firstName: "John",
+          lastName: "Doe",
+          gender: 1,
+          phone: "1111111111",
+          birthDate: new Date(1990, 1, 5),
+          registerDate: new Date(),
+          authority: 4,
+        },
       ],
       {}
     );
