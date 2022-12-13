@@ -57,6 +57,7 @@ const login = async (req, res, next) => {
     const data = await user.findOne({
       where: {
         email: req.body.email,
+        active: true,
       },
     });
 
@@ -152,7 +153,7 @@ const resetPassword = async (req, res, next) => {
   try {
     await user.update(
       {
-        password: encryptString(`ozisanat${req.body.firstName}`),
+        password: encryptString(`ozisanatchess`),
       },
       {
         where: {

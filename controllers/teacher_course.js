@@ -2,7 +2,11 @@ const { teacher_course } = require("../models");
 
 const getAllTeacherCourses = async (req, res, next) => {
   try {
-    const data = await teacher_course.findAll({});
+    const data = await teacher_course.findAll({
+      where: {
+        active: true,
+      },
+    });
 
     return res.json({
       code: res.statusCode,

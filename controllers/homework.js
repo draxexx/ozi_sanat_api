@@ -2,7 +2,11 @@ const { homework } = require("../models");
 
 const getAllHomeworks = async (req, res, next) => {
   try {
-    const data = await homework.findAll({});
+    const data = await homework.findAll({
+      where: {
+        active: true,
+      },
+    });
 
     return res.json({ code: res.statusCode, status: "success", data: data });
   } catch (error) {

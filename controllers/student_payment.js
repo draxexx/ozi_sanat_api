@@ -2,7 +2,11 @@ const { student_payment } = require("../models");
 
 const getAllStudentPayments = async (req, res, next) => {
   try {
-    const data = await student_payment.findAll({});
+    const data = await student_payment.findAll({
+      where: {
+        active: true,
+      },
+    });
 
     return res.json({
       code: res.statusCode,
@@ -49,6 +53,9 @@ const checkLastLessonOfPayment = async (req, res, next) => {
     const studentPayment = await student_payment.findOne({
       where: {
         id: req.params.id,
+        where: {
+          active: true,
+        },
       },
     });
 

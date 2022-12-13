@@ -7,6 +7,7 @@ const {
   getSingleStudentLessons,
   getSingleStudentPayments,
   getSingleStudentCourses,
+  getSingleStudentCoursesByTeacher,
   getSingleStudentNotifications,
   createStudent,
   updateStudent,
@@ -21,6 +22,7 @@ router.get("/:id", getSingleStudent);
 router.get("/:id/lessons", getSingleStudentLessons);
 router.get("/:id/payments", getSingleStudentPayments);
 router.get("/:id/courses", getSingleStudentCourses);
+router.get("/:id/courses/:teacherId", getSingleStudentCoursesByTeacher);
 router.get("/:id/notifications", getSingleStudentNotifications);
 
 module.exports = router;

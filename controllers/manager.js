@@ -6,6 +6,7 @@ const getAllManagers = async (req, res, next) => {
     const data = await user.findAll({
       where: {
         authority: 1,
+        active: true,
       },
       order: [
         ["firstName", "ASC"],
