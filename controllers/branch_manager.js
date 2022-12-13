@@ -7,13 +7,13 @@ const {
   student_payment,
 } = require("../models");
 const { encryptString } = require("../helpers/crypt_string");
-const { findUniqueItem } = require("../helpers/find_unique_in_list");
 
 const getAllBranchManagers = async (req, res, next) => {
   try {
     const data = await user.findAll({
       where: {
         authority: 2,
+        active: true,
       },
     });
     return res.json({

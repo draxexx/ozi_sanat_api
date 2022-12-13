@@ -2,7 +2,11 @@ const { notification } = require("../models");
 
 const getAllNotifications = async (req, res, next) => {
   try {
-    const data = await notification.findAll({});
+    const data = await notification.findAll({
+      where: {
+        active: true,
+      },
+    });
 
     return res.json({
       code: res.statusCode,
@@ -26,6 +30,7 @@ const createNotification = async (req, res, next) => {
     const data = await notification.findOne({
       where: {
         id: createdNotification.id,
+        active: true,
       },
     });
 

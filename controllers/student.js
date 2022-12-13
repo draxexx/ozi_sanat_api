@@ -16,6 +16,7 @@ const getAllStudents = async (req, res, next) => {
     const data = await user.findAll({
       where: {
         authority: 4,
+        active: true,
       },
       order: [
         ["firstName", "ASC"],
@@ -43,6 +44,7 @@ const getSingleStudent = async (req, res, next) => {
       where: {
         id: req.params.id,
         authority: 4,
+        active: true,
       },
     });
     return res.json({
@@ -68,37 +70,42 @@ const getSingleStudentLessons = async (req, res, next) => {
       where: {
         id: req.params.id,
         authority: 4,
+        active: true,
       },
-      order: [["payments", "lessons", "date", "ASC"]],
+      order: [["payments", "lessonStudents", "lesson", "date", "ASC"]],
       attributes: [],
       include: {
         model: student_payment,
         as: "payments",
         attributes: ["id"],
         include: {
-          model: lesson,
-          as: "lessons",
-          attributes: ["id", "date"],
-          through: { attributes: [] },
+          model: lesson_student,
+          as: "lessonStudents",
+          attributes: ["id", "status"],
           include: {
-            model: teacher_course,
-            as: "teacherCourse",
-            attributes: ["id"],
-            include: [
-              {
-                model: branch_course,
-                as: "branchCourse",
-                attributes: ["id"],
-                include: {
-                  model: course,
-                  as: "course",
+            model: lesson,
+            as: "lesson",
+            attributes: ["id", "date"],
+            include: {
+              model: teacher_course,
+              as: "teacherCourse",
+              attributes: ["id"],
+              include: [
+                {
+                  model: branch_course,
+                  as: "branchCourse",
+                  attributes: ["id"],
+                  include: {
+                    model: course,
+                    as: "course",
+                  },
                 },
-              },
-              {
-                model: user,
-                as: "teacher",
-              },
-            ],
+                {
+                  model: user,
+                  as: "teacher",
+                },
+              ],
+            },
           },
         },
       },
@@ -109,17 +116,22 @@ const getSingleStudentLessons = async (req, res, next) => {
     let data = [];
 
     payments.forEach((element) => {
-      let lessons = element.lessons;
+      let lessonStudents = element.lessonStudents;
 
-      lessons.forEach((lesson) => {
+      lessonStudents.forEach((lessonStudent) => {
         data.push({
-          id: lesson.id,
-          date: lesson.date,
-          course: lesson.teacherCourse.branchCourse.course,
-          teacher: lesson.teacherCourse.teacher,
+          id: lessonStudent.lesson.id,
+          date: lessonStudent.lesson.date,
+          lessonStudent: {
+            status: lessonStudent.status,
+          },
+          course: lessonStudent.lesson.teacherCourse.branchCourse.course,
+          teacher: lessonStudent.lesson.teacherCourse.teacher,
         });
       });
     });
+
+    data.sort((a, b) => Date.parse(a.date) - Date.parse(b.date));
 
     return res.json({
       code: res.statusCode,
@@ -142,6 +154,7 @@ const getSingleStudentPayments = async (req, res, next) => {
       where: {
         id: req.params.id,
         authority: 4,
+        active: true,
       },
     });
 
@@ -172,6 +185,7 @@ const getSingleStudentCourses = async (req, res, next) => {
       where: {
         id: req.params.id,
         authority: 4,
+        active: true,
       },
     });
 
@@ -179,6 +193,7 @@ const getSingleStudentCourses = async (req, res, next) => {
       where: {
         studentId: student.id,
       },
+      order: [["lessons", "date", "ASC"]],
       include: [
         {
           model: branch_course,
@@ -223,12 +238,84 @@ const getSingleStudentCourses = async (req, res, next) => {
   }
 };
 
+const getSingleStudentCoursesByTeacher = async (req, res, next) => {
+  try {
+    const student = await user.findOne({
+      where: {
+        id: req.params.id,
+        authority: 4,
+        active: true,
+      },
+    });
+
+    const studentPayments = await student_payment.findAll({
+      where: {
+        studentId: student.id,
+      },
+      order: [["lessons", "date", "ASC"]],
+      include: [
+        {
+          model: branch_course,
+          as: "branchCourse",
+          include: [
+            {
+              model: course,
+              as: "course",
+            },
+            {
+              model: user,
+              as: "teachers",
+              where: {
+                id: req.params.teacherId,
+              },
+            },
+          ],
+        },
+        {
+          model: lesson,
+          as: "lessons",
+          through: { as: "lessonStudent", attributes: ["status"] },
+        },
+      ],
+    });
+
+    let data = [];
+
+    studentPayments.forEach((element) => {
+      if (element.branchCourse != null) {
+        data.push({
+          startDate: element.startDate,
+          endDate: element.endDate,
+          compensationAmount: element.compensationAmount,
+          course: element.branchCourse.course,
+          lessons: element.lessons,
+        });
+      }
+    });
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      message: "Öğrenci kursları başarıyla getirildi.",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: "Öğrenci kursları getirilirken hata meydana geldi.",
+    });
+  }
+};
+
 const getSingleStudentNotifications = async (req, res, next) => {
   try {
     const student = await user.findOne({
       where: {
         id: req.params.id,
         authority: 4,
+        active: true,
       },
       attributes: [],
       include: {
@@ -300,6 +387,7 @@ const updateStudent = async (req, res, next) => {
   try {
     await user.update(
       {
+        email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         phone: req.body.phone,
@@ -403,4 +491,5 @@ module.exports = {
   createStudent,
   updateStudent,
   createStudentLessons,
+  getSingleStudentCoursesByTeacher,
 };

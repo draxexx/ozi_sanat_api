@@ -12,6 +12,9 @@ const {
 const getAllLessons = async (req, res, next) => {
   try {
     const data = await lesson.findAll({
+      where: {
+        active: true,
+      },
       include: [
         {
           model: teacher_course,

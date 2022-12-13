@@ -2,7 +2,11 @@ const { branch, branch_course, course } = require("../models");
 
 const getAllBranchCourses = async (req, res, next) => {
   try {
-    const data = await branch_course.findAll({});
+    const data = await branch_course.findAll({
+      where: {
+        active: true,
+      },
+    });
 
     return res.json({
       code: res.statusCode,
