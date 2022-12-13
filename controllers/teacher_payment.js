@@ -2,7 +2,11 @@ const { teacher_payment } = require("../models");
 
 const getAllTeacherPayments = async (req, res, next) => {
   try {
-    const data = await teacher_payment.findAll({});
+    const data = await teacher_payment.findAll({
+      where: {
+        active: true,
+      },
+    });
 
     return res.json({
       code: res.statusCode,

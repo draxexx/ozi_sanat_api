@@ -3,7 +3,11 @@ const { findUniqueItem } = require("../helpers/find_unique_in_list");
 
 const getAllBranchManages = async (req, res, next) => {
   try {
-    const data = await branch_manage.findAll({});
+    const data = await branch_manage.findAll({
+      where: {
+        active: true,
+      },
+    });
 
     return res.json({
       code: res.statusCode,
@@ -25,6 +29,7 @@ const getBranchStudents = async (req, res, next) => {
     const singleBranchManage = await branch_manage.findOne({
       where: {
         teacherId: req.params.id,
+        active: true,
       },
       //   attributes: [],
       order: [
@@ -41,6 +46,9 @@ const getBranchStudents = async (req, res, next) => {
           include: {
             model: user,
             as: "students",
+            where: {
+              active: true,
+            },
           },
         },
       },

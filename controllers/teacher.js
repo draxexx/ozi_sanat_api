@@ -2,6 +2,7 @@ const {
   branch_course,
   course,
   lesson,
+  lesson_student,
   user,
   student_payment,
   teacher_course,
@@ -15,6 +16,7 @@ const getAllTeachers = async (req, res, next) => {
     const data = await user.findAll({
       where: {
         authority: [1, 2, 3],
+        active: true,
       },
       order: [
         ["firstName", "ASC"],
@@ -42,6 +44,7 @@ const getSingleTeacher = async (req, res, next) => {
       where: {
         id: req.params.id,
         authority: [1, 2, 3],
+        active: true,
       },
     });
     return res.json({
@@ -67,6 +70,7 @@ const getSingleTeacherCourses = async (req, res, next) => {
       where: {
         id: req.params.id,
         authority: [1, 2, 3],
+        active: true,
       },
       include: {
         model: branch_course,
@@ -110,6 +114,7 @@ const getSingleTeacherLessons = async (req, res, next) => {
       where: {
         id: req.params.id,
         authority: [1, 2, 3],
+        active: true,
       },
       attributes: [],
       order: [["teacherCourses", "lessons", "date", "ASC"]],
@@ -193,6 +198,7 @@ const getSingleTeacherStudents = async (req, res, next) => {
       where: {
         id: req.params.id,
         authority: [1, 2, 3],
+        active: true,
       },
       attributes: [],
       order: [
@@ -212,6 +218,9 @@ const getSingleTeacherStudents = async (req, res, next) => {
         include: {
           model: lesson,
           as: "lessons",
+          where: {
+            active: true,
+          },
           include: [
             {
               model: teacher_course,
@@ -231,11 +240,13 @@ const getSingleTeacherStudents = async (req, res, next) => {
               model: student_payment,
               as: "studentPayments",
               through: { attributes: [] },
-
               attributes: ["id"],
               include: {
                 model: user,
                 as: "student",
+                where: {
+                  active: true,
+                },
               },
             },
           ],
@@ -311,6 +322,7 @@ const updateTeacher = async (req, res, next) => {
   try {
     await user.update(
       {
+        email: req.body.email,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         phone: req.body.phone,

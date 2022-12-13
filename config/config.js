@@ -32,6 +32,7 @@ module.exports = {
     password: process.env.DB_PROD_PASSWORD,
     database: process.env.DB_PROD_DATABASE,
     host: process.env.DB_PROD_HOST,
+    dialect: "mysql",
     dialectOptions: {
       useUTC: false, //for reading from database
       dateStrings: true,
@@ -43,7 +44,6 @@ module.exports = {
         return next();
       },
     },
-    dialect: "mysql",
     timezone: "+03:00",
   },
 };

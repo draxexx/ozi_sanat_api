@@ -9,6 +9,9 @@ const {
 const getAllCourses = async (req, res, next) => {
   try {
     const courses = await course.findAll({
+      where: {
+        active: true,
+      },
       order: [["title", "ASC"]],
       include: [
         {
@@ -73,6 +76,7 @@ const getSingleCourse = async (req, res, next) => {
     const data = await course.findOne({
       where: {
         id: req.params.id,
+        active: true,
       },
       include: {
         model: branch,
@@ -134,6 +138,7 @@ const getAllCourseTeachers = async (req, res, next) => {
     const data = await teacher_course.findAll({
       where: {
         branchCourseId: req.params.id,
+        active: true,
       },
       include: {
         model: user,

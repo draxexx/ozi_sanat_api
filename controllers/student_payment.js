@@ -2,7 +2,11 @@ const { student_payment } = require("../models");
 
 const getAllStudentPayments = async (req, res, next) => {
   try {
-    const data = await student_payment.findAll({});
+    const data = await student_payment.findAll({
+      where: {
+        active: true,
+      },
+    });
 
     return res.json({
       code: res.statusCode,
@@ -44,7 +48,42 @@ const createStudentPayment = async (req, res, next) => {
   }
 };
 
+const checkLastLessonOfPayment = async (req, res, next) => {
+  try {
+    const studentPayment = await student_payment.findOne({
+      where: {
+        id: req.params.id,
+        where: {
+          active: true,
+        },
+      },
+    });
+
+    if (req.body.date == studentPayment.endDate) {
+      return res.status(200).json({
+        code: res.statusCode,
+        status: "success",
+        data: true,
+      });
+    } else {
+      return res.status(200).json({
+        code: res.statusCode,
+        status: "success",
+        data: false,
+      });
+    }
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
+  }
+};
+
 module.exports = {
   getAllStudentPayments,
   createStudentPayment,
+  checkLastLessonOfPayment,
 };
