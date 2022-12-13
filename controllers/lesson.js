@@ -62,7 +62,6 @@ const getSingleLesson = async (req, res, next) => {
     const singleLesson = await lesson.findOne({
       where: {
         id: req.params.id,
-        active: true,
       },
       include: [
         {

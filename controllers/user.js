@@ -250,6 +250,42 @@ const uploadImage = async (req, res, next) => {
   }
 };
 
+const updateActive = async (req, res, next) => {
+  try {
+    await user.update(
+      {
+        active: req.body.active,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+
+    const data = await user.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "İşlem başarıyla gerçekleştirildi.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "İşlem sırasında hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 module.exports = {
   getAllUsers,
   login,
@@ -257,4 +293,5 @@ module.exports = {
   updatePassword,
   resetPassword,
   uploadImage,
+  updateActive,
 };

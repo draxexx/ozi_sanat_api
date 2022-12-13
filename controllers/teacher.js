@@ -218,6 +218,9 @@ const getSingleTeacherStudents = async (req, res, next) => {
         include: {
           model: lesson,
           as: "lessons",
+          where: {
+            active: true,
+          },
           include: [
             {
               model: teacher_course,
@@ -241,6 +244,9 @@ const getSingleTeacherStudents = async (req, res, next) => {
               include: {
                 model: user,
                 as: "student",
+                where: {
+                  active: true,
+                },
               },
             },
           ],

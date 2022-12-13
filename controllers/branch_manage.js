@@ -46,6 +46,9 @@ const getBranchStudents = async (req, res, next) => {
           include: {
             model: user,
             as: "students",
+            where: {
+              active: true,
+            },
           },
         },
       },
