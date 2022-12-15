@@ -17,6 +17,7 @@ const homeworks = require("./homeworks");
 const teacherPayments = require("./teacher_payments");
 const notifications = require("./notifications");
 const branchManages = require("./branch_manage");
+const expenses = require("./expenses");
 
 const router = express.Router();
 
@@ -36,5 +37,6 @@ router.use("/homeworks", homeworks);
 router.use("/teacherpayments", teacherPayments);
 router.use("/notifications", notifications);
 router.use("/branchmanages", branchManages);
+router.use("/expenses", expenses);
 
 module.exports = router;
