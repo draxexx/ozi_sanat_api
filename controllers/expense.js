@@ -1,10 +1,15 @@
-const { expense } = require("../models");
+const { branch, expense } = require("../models");
 
 const getAll = async (req, res, next) => {
   try {
     const data = await expense.findAll({
       where: {
         active: true,
+      },
+      order: [["expenseDate", "DESC"]],
+      include: {
+        model: branch,
+        as: "branch",
       },
     });
 
