@@ -1,4 +1,4 @@
-const { student_payment } = require("../models");
+const { student_payment, user } = require("../models");
 
 const getAllStudentPayments = async (req, res, next) => {
   try {
@@ -82,8 +82,37 @@ const checkLastLessonOfPayment = async (req, res, next) => {
   }
 };
 
+const getAllStudentPaymentsWithStudentInfo = async (req, res, next) => {
+  try {
+    const data = await student_payment.findAll({
+      where: {
+        active: true,
+      },
+      order: [["startDate", "DESC"]],
+      include: {
+        model: user,
+        as: "student",
+      },
+    });
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
+  }
+};
+
 module.exports = {
   getAllStudentPayments,
   createStudentPayment,
   checkLastLessonOfPayment,
+  getAllStudentPaymentsWithStudentInfo,
 };
