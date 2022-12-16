@@ -10,6 +10,7 @@ const {
 } = require("../models");
 
 const { encryptString } = require("../helpers/crypt_string");
+const { parse } = require("dotenv");
 
 const getAllStudents = async (req, res, next) => {
   try {
@@ -19,6 +20,35 @@ const getAllStudents = async (req, res, next) => {
         active: true,
       },
       order: [
+        ["firstName", "ASC"],
+        ["lastName", "ASC"],
+      ],
+    });
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
+  }
+};
+
+const getLastStudents = async (req, res, next) => {
+  try {
+    const data = await user.findAll({
+      where: {
+        authority: 4,
+        active: true,
+      },
+      limit: parseInt(req.params.limit),
+      order: [
+        ["registerDate", "DESC"],
         ["firstName", "ASC"],
         ["lastName", "ASC"],
       ],
@@ -483,6 +513,7 @@ const createStudentLessons = async (req, res, next) => {
 
 module.exports = {
   getAllStudents,
+  getLastStudents,
   getSingleStudent,
   getSingleStudentLessons,
   getSingleStudentPayments,
