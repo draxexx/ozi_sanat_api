@@ -13,7 +13,7 @@ const {
 } = require("../controllers/teacher");
 
 router.get("/", getAllTeachers);
-router.get("/:limit", getLastTeachers);
+router.get("/last/:limit", getLastTeachers);
 router.post("/", createTeacher);
 router.put("/:id", updateTeacher);
 router.get("/:id", getSingleTeacher);
