@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   getAllStudents,
+  getLastStudents,
   getSingleStudent,
   getSingleStudentLessons,
   getSingleStudentPayments,
@@ -15,6 +16,7 @@ const {
 } = require("../controllers/student");
 
 router.get("/", getAllStudents);
+router.get("/last/:limit", getLastStudents);
 router.post("/", createStudent);
 router.post("/:id/lessons", createStudentLessons);
 router.put("/:id", updateStudent);

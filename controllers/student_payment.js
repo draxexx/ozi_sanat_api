@@ -1,4 +1,4 @@
-const { student_payment, user } = require("../models");
+const { branch, branch_course, student_payment, user } = require("../models");
 
 const getAllStudentPayments = async (req, res, next) => {
   try {
@@ -89,10 +89,21 @@ const getAllStudentPaymentsWithStudentInfo = async (req, res, next) => {
         active: true,
       },
       order: [["startDate", "DESC"]],
-      include: {
-        model: user,
-        as: "student",
-      },
+      include: [
+        {
+          model: branch_course,
+          as: "branchCourse",
+          attributes: ["id"],
+          include: {
+            model: branch,
+            as: "branch",
+          },
+        },
+        {
+          model: user,
+          as: "student",
+        },
+      ],
     });
 
     return res.json({

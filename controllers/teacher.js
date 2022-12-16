@@ -38,6 +38,35 @@ const getAllTeachers = async (req, res, next) => {
   }
 };
 
+const getLastTeachers = async (req, res, next) => {
+  try {
+    const data = await user.findAll({
+      where: {
+        authority: [1, 2, 3],
+        active: true,
+      },
+      limit: parseInt(req.params.limit),
+      order: [
+        ["registerDate", "DESC"],
+        ["firstName", "ASC"],
+        ["lastName", "ASC"],
+      ],
+    });
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
+  }
+};
+
 const getSingleTeacher = async (req, res, next) => {
   try {
     const data = await user.findOne({
@@ -358,6 +387,7 @@ const updateTeacher = async (req, res, next) => {
 
 module.exports = {
   getAllTeachers,
+  getLastTeachers,
   getSingleTeacher,
   getSingleTeacherCourses,
   getSingleTeacherLessons,

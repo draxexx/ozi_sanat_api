@@ -200,6 +200,29 @@ const uploadImage = async (req, res, next) => {
 
     const buffer = new Buffer.from(req.body.base64, "base64");
 
+    const getUser = await user.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (getUser.image != "") {
+      var splittedImageUrl = getUser.image.split("/");
+      if (splittedImageUrl.length > 0) {
+        c.on("ready", function () {
+          c.delete(
+            "/user-images/" + splittedImageUrl[splittedImageUrl.length - 1],
+            function (err) {
+              if (err) {
+                console.log(err);
+              }
+              c.end();
+            }
+          );
+        });
+      }
+    }
+
     c.on("ready", function () {
       c.put(buffer, "/user-images/" + req.body.name, function (err) {
         if (err) {
@@ -245,7 +268,7 @@ const uploadImage = async (req, res, next) => {
       code: res.statusCode,
       status: "error",
       message:
-        "Parola sıfırlama işlemi sırasında hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+        "Görsel yükleme işlemi sırasında hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
     });
   }
 };

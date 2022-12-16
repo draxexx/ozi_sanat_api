@@ -81,7 +81,42 @@ const getBranchStudents = async (req, res, next) => {
   }
 };
 
+const getBranchByTeacher = async (req, res, next) => {
+  try {
+    const branchManages = await branch_manage.findAll({
+      where: {
+        teacherId: req.params.teacherId,
+      },
+      attributes: [],
+      include: {
+        model: branch,
+        as: "branch",
+      },
+    });
+
+    let data = [];
+
+    branchManages.forEach((item) => {
+      data.push(item.branch);
+    });
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
+  }
+};
+
 module.exports = {
   getAllBranchManages,
   getBranchStudents,
+  getBranchByTeacher,
 };
