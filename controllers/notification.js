@@ -1,4 +1,4 @@
-const Op = require("Sequelize").Op;
+const Op = require("sequelize").Op;
 const { notification, user } = require("../models");
 
 const getAllNotifications = async (req, res, next) => {
