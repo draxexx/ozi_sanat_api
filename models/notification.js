@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Notification.belongsTo(models.user, {
-        foreignKey: "teacherId",
-        as: "teacher",
+        foreignKey: "senderId",
+        as: "sender",
       });
     }
   }
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      studentId: {
+      receiverId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "RESTRICT",
       },
-      teacherId: {
+      senderId: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false,

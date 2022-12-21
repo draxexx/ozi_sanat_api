@@ -32,11 +32,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "studentId",
         as: "payments",
       });
-
-      User.hasMany(models.notification, {
-        foreignKey: "studentId",
-        as: "notifications",
-      });
     }
   }
   User.init(
