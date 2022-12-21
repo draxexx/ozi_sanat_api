@@ -22,7 +22,6 @@ const getAllHomeworks = async (req, res, next) => {
 const createHomework = async (req, res, next) => {
   try {
     var Client = require("ftp");
-
     const serverOptions = {
       host: process.env.FTP_HOST,
       port: process.env.FTP_PORT,
@@ -32,34 +31,39 @@ const createHomework = async (req, res, next) => {
 
     var c = new Client();
 
-    const buffer = new Buffer.from(req.body.base64, "base64");
+    var names = req.body.name;
+    var base64List = req.body.base64;
 
     c.on("ready", function () {
-      c.put(buffer, "/homeworks/" + req.body.name, function (err) {
-        if (err) {
-          return res.status(404).json({
-            code: res.statusCode,
-            status: "error",
-            message:
-              "Ödev yüklenirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
-          });
-        }
-        c.end();
-      });
+      for (let i = 0; i < names.length; i++) {
+        const buffer = new Buffer.from(base64List[i], "base64");
+
+        c.put(buffer, "/homeworks/" + names[i], function (err) {
+          if (err) {
+            return res.status(404).json({
+              code: res.statusCode,
+              status: "error",
+              message:
+                "Ödev yüklenirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+            });
+          }
+          c.end();
+        });
+      }
     });
 
     c.connect(serverOptions);
 
-    const createdHomework = await homework.create({
-      lessonId: req.body.lessonId,
-      file: `${process.env.FTP_URL}homeworks/${req.body.name}`,
-    });
+    let data = [];
 
-    const data = await homework.findOne({
-      where: {
-        id: createdHomework.id,
-      },
-    });
+    for (let i = 0; i < names.length; i++) {
+      const createdHomework = await homework.create({
+        lessonId: req.body.lessonId,
+        file: `${process.env.FTP_URL}homeworks/${names[i]}`,
+      });
+
+      data.push(createdHomework);
+    }
 
     return res.status(201).json({
       code: res.statusCode,

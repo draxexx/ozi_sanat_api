@@ -53,9 +53,6 @@ const checkLastLessonOfPayment = async (req, res, next) => {
     const studentPayment = await student_payment.findOne({
       where: {
         id: req.params.id,
-        where: {
-          active: true,
-        },
       },
     });
 
