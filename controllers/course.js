@@ -103,9 +103,38 @@ const getSingleCourse = async (req, res, next) => {
 
 const createCourse = async (req, res, next) => {
   try {
+    var Client = require("ftp");
+
+    const serverOptions = {
+      host: process.env.FTP_HOST,
+      port: process.env.FTP_PORT,
+      user: process.env.FTP_USERNAME,
+      password: process.env.FTP_PASSWORD,
+    };
+
+    var c = new Client();
+
+    const buffer = new Buffer.from(req.body.base64, "base64");
+
+    c.on("ready", function () {
+      c.put(buffer, "/course-images/" + req.body.image, function (err) {
+        if (err) {
+          return res.status(404).json({
+            code: res.statusCode,
+            status: "error",
+            message:
+              "Görsel yüklerken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+          });
+        }
+        c.end();
+      });
+    });
+
+    c.connect(serverOptions);
+
     const createdCourse = await course.create({
       title: req.body.title,
-      image: req.body.image,
+      image: `${process.env.FTP_URL}course-images/${req.body.image}`,
       price: req.body.price,
       registerDate: req.body.registerDate,
     });
@@ -129,6 +158,110 @@ const createCourse = async (req, res, next) => {
       status: "error",
       message:
         "Kurs kaydederken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
+const updateCourse = async (req, res, next) => {
+  try {
+    if (req.body.base64 == null) {
+      await course.update(
+        {
+          title: req.body.title,
+          price: req.body.price,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      );
+    } else {
+      var Client = require("ftp");
+
+      const serverOptions = {
+        host: process.env.FTP_HOST,
+        port: process.env.FTP_PORT,
+        user: process.env.FTP_USERNAME,
+        password: process.env.FTP_PASSWORD,
+      };
+
+      var c = new Client();
+
+      const buffer = new Buffer.from(req.body.base64, "base64");
+
+      const getCourse = await course.findOne({
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      if (getCourse.image != "") {
+        var splittedImageUrl = getCourse.image.split("/");
+        if (splittedImageUrl.length > 0) {
+          c.on("ready", function () {
+            c.delete(
+              "/course-images/" + splittedImageUrl[splittedImageUrl.length - 1],
+              function (err) {
+                if (err) {
+                  console.log(err);
+                }
+                c.end();
+              }
+            );
+          });
+        }
+      }
+
+      c.on("ready", function () {
+        c.put(buffer, "/course-images/" + req.body.image, function (err) {
+          if (err) {
+            return res.status(404).json({
+              code: res.statusCode,
+              status: "error",
+              message:
+                "Görsel yüklerken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+            });
+          }
+          c.end();
+        });
+      });
+
+      c.connect(serverOptions);
+
+      await course.update(
+        {
+          title: req.body.title,
+          image: `${process.env.FTP_URL}course-images/${req.body.image}`,
+          price: req.body.price,
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      );
+    }
+
+    const data = await course.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "Kurs başarıyla güncellendi.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Kurs güncellerken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
     });
   }
 };
@@ -166,6 +299,7 @@ const getAllCourseTeachers = async (req, res, next) => {
 module.exports = {
   getAllCourses,
   createCourse,
+  updateCourse,
   getAllCourseTeachers,
   getSingleCourse,
 };
