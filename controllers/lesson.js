@@ -59,7 +59,7 @@ const getAllLessons = async (req, res, next) => {
 
 const getSingleLesson = async (req, res, next) => {
   try {
-    const singleLesson = await lesson.findOne({
+    const data = await lesson.findOne({
       where: {
         id: req.params.id,
       },
@@ -93,7 +93,6 @@ const getSingleLesson = async (req, res, next) => {
             {
               model: student_payment,
               as: "studentPayment",
-              attributes: ["id", "compensationAmount"],
               include: [
                 {
                   model: user,
@@ -109,31 +108,6 @@ const getSingleLesson = async (req, res, next) => {
         },
       ],
     });
-
-    let lessonStudents = [];
-
-    singleLesson.lessonStudents.forEach((element) => {
-      lessonStudents.push({
-        studentPayment: {
-          id: element.studentPayment.id,
-          compensationAmount: element.studentPayment.compensationAmount,
-        },
-        id: element.id,
-        status: element.status,
-        student: element.studentPayment.student,
-      });
-    });
-
-    const data = {
-      id: singleLesson.id,
-      isCompleted: singleLesson.isCompleted,
-      date: singleLesson.date,
-      active: singleLesson.active,
-      teacher: singleLesson.teacherCourse.teacher,
-      course: singleLesson.teacherCourse.branchCourse.course,
-      lessonStudents,
-      homeworks: singleLesson.homeworks,
-    };
 
     return res.json({
       code: res.statusCode,
