@@ -13,7 +13,7 @@ const routers = require("./routes/index");
 // middlewares
 
 // routes
-app.use("/api/v1", routers);
+app.use("/", routers);
 
 module.exports = app;
 
