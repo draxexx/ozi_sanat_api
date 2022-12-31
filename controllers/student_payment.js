@@ -48,6 +48,45 @@ const createStudentPayment = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    await student_payment.update(
+      {
+        startDate: req.body.startDate,
+        endDate: req.body.endDate,
+        paymentDate: req.body.paymentDate,
+        price: req.body.price,
+        compensationAmount: req.body.compensationAmount,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+
+    const data = await student_payment.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "İşlem başarıyla gerçekleştirildi.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "İşlem sırasında hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
 const checkLastLessonOfPayment = async (req, res, next) => {
   try {
     const studentPayment = await student_payment.findOne({
@@ -123,4 +162,5 @@ module.exports = {
   createStudentPayment,
   checkLastLessonOfPayment,
   getAllStudentPaymentsWithStudentInfo,
+  update,
 };
