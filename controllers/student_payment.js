@@ -1,4 +1,12 @@
-const { branch, branch_course, student_payment, user } = require("../models");
+const {
+  branch,
+  branch_course,
+  homework,
+  lesson,
+  lesson_student,
+  student_payment,
+  user,
+} = require("../models");
 
 const getAllStudentPayments = async (req, res, next) => {
   try {
@@ -87,6 +95,64 @@ const update = async (req, res, next) => {
     });
   }
 };
+
+const deleteStudentPayment = async (req, res, next) => {
+  try {
+    const studentPayment = await student_payment.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    const studentLessons = await lesson_student.findAll({
+      where: {
+        studentPaymentId: studentPayment.id,
+      },
+    });
+
+    for (let i = 0; i < studentLessons.length; i++) {
+      await lesson_student.destroy({
+        where: {
+          id: studentLessons[i].id,
+        },
+      });
+
+      await homework.destroy({
+        where: {
+          lessonId: studentLessons[i].lessonId,
+        },
+      });
+
+      await lesson.destroy({
+        where: {
+          id: studentLessons[i].lessonId,
+        },
+      });
+    }
+
+    const data = await student_payment.destroy({
+      where: {
+        id: studentPayment.id,
+      },
+    });
+
+    return res.status(201).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "Öğrenci ödemesi başarıyla silindi.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "İşlem sırasında hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 const checkLastLessonOfPayment = async (req, res, next) => {
   try {
     const studentPayment = await student_payment.findOne({
@@ -163,4 +229,5 @@ module.exports = {
   checkLastLessonOfPayment,
   getAllStudentPaymentsWithStudentInfo,
   update,
+  deleteStudentPayment,
 };
