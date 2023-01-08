@@ -88,7 +88,7 @@ const login = async (req, res, next) => {
     return res.status(404).json({
       code: res.statusCode,
       status: "error",
-      message: error,
+      message: error.toString(),
     });
   }
 };
