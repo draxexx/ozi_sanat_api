@@ -62,7 +62,39 @@ const create = async (req, res, next) => {
   }
 };
 
+const deleteExpense = async (req, res, next) => {
+  try {
+    const data = await expense.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    await expense.destroy({
+      where: {
+        id: data.id,
+      },
+    });
+
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "Gider başarıyla silindi.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Gider silerken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 module.exports = {
   getAll,
   create,
+  deleteExpense,
 };
