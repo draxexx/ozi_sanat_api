@@ -245,8 +245,11 @@ const getSingleStudentCourses = async (req, res, next) => {
 
     studentPayments.forEach((element) => {
       data.push({
+        id: element.id,
         startDate: element.startDate,
         endDate: element.endDate,
+        paymentDate: element.paymentDate,
+        price: element.price,
         compensationAmount: element.compensationAmount,
         course: element.branchCourse.course,
         lessons: element.lessons,
