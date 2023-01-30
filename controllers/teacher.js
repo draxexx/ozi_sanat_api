@@ -185,7 +185,7 @@ const getSingleTeacherLessons = async (req, res, next) => {
       },
     });
 
-    let data = [];
+    let unsortedDateList = [];
 
     teacher.teacherCourses.forEach((element) => {
       element.lessons.forEach((lesson) => {
@@ -195,7 +195,7 @@ const getSingleTeacherLessons = async (req, res, next) => {
           students.push(studentPayment.student);
         });
 
-        data.push({
+        unsortedDateList.push({
           id: lesson.id,
           isCompleted: lesson.isCompleted,
           date: lesson.date,
@@ -205,6 +205,10 @@ const getSingleTeacherLessons = async (req, res, next) => {
         });
       });
     });
+
+    const data = unsortedDateList.sort(
+      (a, b) => Date.parse(new Date(b.date)) - Date.parse(new Date(a.date))
+    );
 
     return res.json({
       code: res.statusCode,
