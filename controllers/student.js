@@ -561,6 +561,43 @@ const getNonPayingStudents = async (req, res, next) => {
   }
 };
 
+const getSingleStudentNonPayings = async (req, res, next) => {
+  try {
+    const studentPayments = await student_payment.findAll({
+      where: {
+        isPaymentCompleted: false,
+        active: true,
+        studentId: req.params.id,
+      },
+      order: [["startDate", "ASC"]],
+      include: {
+        model: branch_course,
+        as: "branchCourse",
+        attributes: ["id"],
+        include: {
+          model: course,
+          as: "course",
+        },
+      },
+    });
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      message: "Ödemesini yapmayan öğrenciler başarıyla getirildi.",
+      data: studentPayments,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Ödemesini yapmayan öğrenciler getirilirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 module.exports = {
   getAllStudents,
   getLastStudents,
@@ -574,4 +611,5 @@ module.exports = {
   createStudentLessons,
   getSingleStudentCoursesByTeacher,
   getNonPayingStudents,
+  getSingleStudentNonPayings,
 };

@@ -14,6 +14,7 @@ const {
   updateStudent,
   createStudentLessons,
   getNonPayingStudents,
+  getSingleStudentNonPayings,
 } = require("../controllers/student");
 
 router.get("/", getAllStudents);
@@ -28,5 +29,6 @@ router.get("/:id/courses", getSingleStudentCourses);
 router.get("/:id/courses/:teacherId", getSingleStudentCoursesByTeacher);
 router.get("/:id/notifications", getSingleStudentNotifications);
 router.get("/nonpaying/list", getNonPayingStudents);
+router.get("/:id/nonpayings", getSingleStudentNonPayings);
 
 module.exports = router;
