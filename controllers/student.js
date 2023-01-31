@@ -252,6 +252,7 @@ const getSingleStudentCourses = async (req, res, next) => {
         paymentDate: element.paymentDate,
         price: element.price,
         compensationAmount: element.compensationAmount,
+        isPaymentCompleted: element.isPaymentCompleted,
         course: element.branchCourse.course,
         lessons: element.lessons,
       });
