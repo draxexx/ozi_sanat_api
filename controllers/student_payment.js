@@ -223,6 +223,42 @@ const getAllStudentPaymentsWithStudentInfo = async (req, res, next) => {
   }
 };
 
+const updatePaymentIsCompleted = async (req, res, next) => {
+  try {
+    await student_payment.update(
+      {
+        isPaymentCompleted: req.body.isPaymentCompleted,
+      },
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+
+    const data = await student_payment.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    return res.status(200).json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+      message: "İşlem başarıyla gerçekleştirildi.",
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "İşlem sırasında hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 module.exports = {
   getAllStudentPayments,
   createStudentPayment,
@@ -230,4 +266,5 @@ module.exports = {
   getAllStudentPaymentsWithStudentInfo,
   update,
   deleteStudentPayment,
+  updatePaymentIsCompleted,
 };
