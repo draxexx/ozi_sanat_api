@@ -324,9 +324,11 @@ const getSingleStudentCoursesByTeacher = async (req, res, next) => {
     studentPayments.forEach((element) => {
       if (element.branchCourse != null) {
         data.push({
+          id: element.id,
           startDate: element.startDate,
           endDate: element.endDate,
           compensationAmount: element.compensationAmount,
+          isPaymentCompleted: element.isPaymentCompleted,
           course: element.branchCourse.course,
           lessons: element.lessons,
         });
