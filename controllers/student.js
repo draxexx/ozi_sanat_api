@@ -464,6 +464,7 @@ const createStudentLessons = async (req, res, next) => {
       endDate: req.body.studentPayment.endDate,
       paymentDate: req.body.studentPayment.paymentDate,
       price: req.body.studentPayment.price,
+      isPaymentCompleted: req.body.studentPayment.isPaymentCompleted,
       compensationAmount: 1,
     });
 
