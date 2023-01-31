@@ -242,10 +242,10 @@ const getSingleStudentCourses = async (req, res, next) => {
       ],
     });
 
-    let data = [];
+    let unsortedData = [];
 
     studentPayments.forEach((element) => {
-      data.push({
+      unsortedData.push({
         id: element.id,
         startDate: element.startDate,
         endDate: element.endDate,
@@ -257,6 +257,11 @@ const getSingleStudentCourses = async (req, res, next) => {
         lessons: element.lessons,
       });
     });
+
+    const data = unsortedData.sort(
+      (a, b) =>
+        Date.parse(new Date(b.startDate)) - Date.parse(new Date(a.startDate))
+    );
 
     return res.json({
       code: res.statusCode,
