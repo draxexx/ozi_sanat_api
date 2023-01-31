@@ -10,7 +10,8 @@ const {
 } = require("../models");
 
 const { encryptString } = require("../helpers/crypt_string");
-const { parse } = require("dotenv");
+
+const { findUniqueItem } = require("../helpers/find_unique_in_list");
 
 const getAllStudents = async (req, res, next) => {
   try {
@@ -492,12 +493,6 @@ const createStudentLessons = async (req, res, next) => {
       createdLessons,
     };
 
-    // const data = await user.findOne({
-    //   where: {
-    //     id: createdStudent.id,
-    //   },
-    // });
-
     return res.status(201).json({
       code: res.statusCode,
       status: "success",
@@ -515,6 +510,49 @@ const createStudentLessons = async (req, res, next) => {
   }
 };
 
+const getNonPayingStudents = async (req, res, next) => {
+  try {
+    const studentPayments = await student_payment.findAll({
+      where: {
+        isPaymentCompleted: false,
+        active: true,
+      },
+      attributes: [],
+      order: [
+        ["student", "firstName", "ASC"],
+        ["student", "lastName", "ASC"],
+      ],
+      include: {
+        model: user,
+        as: "student",
+      },
+    });
+
+    let students = [];
+
+    studentPayments.forEach((payment) => {
+      students.push(payment.student);
+    });
+
+    const data = findUniqueItem(students);
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      message: "Ödemesini yapmayan öğrenciler başarıyla getirildi.",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message:
+        "Ödemesini yapmayan öğrenciler getirilirken hata meydana geldi, lütfen daha sonra tekrar deneyiniz.",
+    });
+  }
+};
+
 module.exports = {
   getAllStudents,
   getLastStudents,
@@ -527,4 +565,5 @@ module.exports = {
   updateStudent,
   createStudentLessons,
   getSingleStudentCoursesByTeacher,
+  getNonPayingStudents,
 };

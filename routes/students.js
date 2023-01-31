@@ -13,6 +13,7 @@ const {
   createStudent,
   updateStudent,
   createStudentLessons,
+  getNonPayingStudents,
 } = require("../controllers/student");
 
 router.get("/", getAllStudents);
@@ -26,5 +27,6 @@ router.get("/:id/payments", getSingleStudentPayments);
 router.get("/:id/courses", getSingleStudentCourses);
 router.get("/:id/courses/:teacherId", getSingleStudentCoursesByTeacher);
 router.get("/:id/notifications", getSingleStudentNotifications);
+router.get("/nonpaying/list", getNonPayingStudents);
 
 module.exports = router;
