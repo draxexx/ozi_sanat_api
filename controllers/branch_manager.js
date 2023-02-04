@@ -1,11 +1,4 @@
-const {
-  branch_course,
-  course,
-  user,
-  teacher_course,
-  lesson,
-  student_payment,
-} = require("../models");
+const { user } = require("../models");
 const { encryptString } = require("../helpers/crypt_string");
 
 const getAllBranchManagers = async (req, res, next) => {
