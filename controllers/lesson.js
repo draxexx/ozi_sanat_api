@@ -153,6 +153,7 @@ const completeLesson = async (req, res, next) => {
   try {
     await lesson.update(
       {
+        isCompleted: true,
         active: false,
       },
       {
