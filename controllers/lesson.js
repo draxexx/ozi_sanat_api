@@ -72,7 +72,7 @@ const getSingleLesson = async (req, res, next) => {
             {
               model: user,
               as: "teacher",
-              attributes: ["firstName", "lastName"],
+              attributes: ["id", "firstName", "lastName"],
             },
             {
               model: branch_course,
