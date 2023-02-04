@@ -598,6 +598,77 @@ const getSingleStudentNonPayings = async (req, res, next) => {
   }
 };
 
+const getSingleStudentBranchCourses = async (req, res, next) => {
+  try {
+    const student = await user.findOne({
+      where: {
+        id: req.params.id,
+        authority: 4,
+        active: true,
+      },
+    });
+
+    const studentPayments = await student_payment.findAll({
+      where: {
+        studentId: student.id,
+      },
+      order: [["lessons", "date", "ASC"]],
+      include: [
+        {
+          model: branch_course,
+          as: "branchCourse",
+          where: {
+            branchId: req.params.branchId,
+          },
+          include: {
+            model: course,
+            as: "course",
+          },
+        },
+        {
+          model: lesson,
+          as: "lessons",
+          through: { as: "lessonStudent", attributes: ["status"] },
+        },
+      ],
+    });
+
+    let unsortedData = [];
+
+    studentPayments.forEach((element) => {
+      unsortedData.push({
+        id: element.id,
+        startDate: element.startDate,
+        endDate: element.endDate,
+        paymentDate: element.paymentDate,
+        price: element.price,
+        compensationAmount: element.compensationAmount,
+        isPaymentCompleted: element.isPaymentCompleted,
+        course: element.branchCourse.course,
+        lessons: element.lessons,
+      });
+    });
+
+    const data = unsortedData.sort(
+      (a, b) =>
+        Date.parse(new Date(b.startDate)) - Date.parse(new Date(a.startDate))
+    );
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
+  }
+};
+
 module.exports = {
   getAllStudents,
   getLastStudents,
@@ -612,4 +683,5 @@ module.exports = {
   getSingleStudentCoursesByTeacher,
   getNonPayingStudents,
   getSingleStudentNonPayings,
+  getSingleStudentBranchCourses,
 };
