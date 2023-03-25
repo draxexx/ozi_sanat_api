@@ -513,13 +513,27 @@ const getSingleTeacherLessonsGroupByDay = async (req, res, next) => {
     });
 
     let data = {
-      monday: monday,
-      tuesday: tuesday,
-      wednesday: wednesday,
-      thursday: thursday,
-      friday: friday,
-      saturday: saturday,
-      sunday: sunday,
+      monday: monday.sort(
+        (a, b) => Date.parse(new Date(a.date)) - Date.parse(new Date(b.date))
+      ),
+      tuesday: tuesday.sort(
+        (a, b) => Date.parse(new Date(a.date)) - Date.parse(new Date(b.date))
+      ),
+      wednesday: wednesday.sort(
+        (a, b) => Date.parse(new Date(a.date)) - Date.parse(new Date(b.date))
+      ),
+      thursday: thursday.sort(
+        (a, b) => Date.parse(new Date(a.date)) - Date.parse(new Date(b.date))
+      ),
+      friday: friday.sort(
+        (a, b) => Date.parse(new Date(a.date)) - Date.parse(new Date(b.date))
+      ),
+      saturday: saturday.sort(
+        (a, b) => Date.parse(new Date(a.date)) - Date.parse(new Date(b.date))
+      ),
+      sunday: sunday.sort(
+        (a, b) => Date.parse(new Date(a.date)) - Date.parse(new Date(b.date))
+      ),
     };
 
     return res.json({
