@@ -2,7 +2,6 @@ const {
   branch_course,
   course,
   lesson,
-  lesson_student,
   user,
   student_payment,
   teacher_course,
@@ -10,6 +9,10 @@ const {
 
 const { encryptString } = require("../helpers/crypt_string");
 const { findUniqueItem } = require("../helpers/find_unique_in_list");
+const {
+  firstAndLastDayOfTheWeek,
+  findTheDateInTheWeek,
+} = require("../helpers/date_helpers");
 
 const getAllTeachers = async (req, res, next) => {
   try {
@@ -389,12 +392,158 @@ const updateTeacher = async (req, res, next) => {
   }
 };
 
+const getSingleTeacherLessonsGroupByDay = async (req, res, next) => {
+  try {
+    const teacher = await user.findOne({
+      where: {
+        id: req.params.id,
+        authority: [1, 2, 3],
+        active: true,
+      },
+      attributes: [],
+      order: [["teacherCourses", "lessons", "date", "ASC"]],
+      include: {
+        model: teacher_course,
+        as: "teacherCourses",
+        attributes: ["id"],
+        include: {
+          model: lesson,
+          as: "lessons",
+          include: [
+            {
+              model: teacher_course,
+              as: "teacherCourse",
+              attributes: ["id"],
+              include: {
+                model: branch_course,
+                as: "branchCourse",
+                attributes: ["id"],
+                include: {
+                  model: course,
+                  as: "course",
+                },
+              },
+            },
+            {
+              model: student_payment,
+              as: "studentPayments",
+              through: { attributes: [] },
+
+              attributes: ["id"],
+              include: {
+                model: user,
+                as: "student",
+              },
+            },
+          ],
+        },
+      },
+    });
+
+    let unsortedDateList = [];
+
+    teacher.teacherCourses.forEach((element) => {
+      element.lessons.forEach((lesson) => {
+        let students = [];
+
+        lesson.studentPayments.forEach((studentPayment) => {
+          students.push(studentPayment.student);
+        });
+
+        unsortedDateList.push({
+          id: lesson.id,
+          isCompleted: lesson.isCompleted,
+          date: lesson.date,
+          active: lesson.active,
+          course: lesson.teacherCourse.branchCourse.course,
+          students: students,
+        });
+      });
+    });
+
+    const sortedLessonList = unsortedDateList.sort(
+      (a, b) => Date.parse(new Date(b.date)) - Date.parse(new Date(a.date))
+    );
+
+    let lessonsInTheWeek = [];
+
+    const firstAndLastDaysOfTheWeek = firstAndLastDayOfTheWeek();
+
+    sortedLessonList.forEach((element) => {
+      const isInTheWeek = findTheDateInTheWeek(
+        firstAndLastDaysOfTheWeek[0],
+        element.date,
+        firstAndLastDaysOfTheWeek[1]
+      );
+
+      if (isInTheWeek) {
+        lessonsInTheWeek.push(element);
+      }
+    });
+
+    let sunday = [];
+    let monday = [];
+    let tuesday = [];
+    let wednesday = [];
+    let thursday = [];
+    let friday = [];
+    let saturday = [];
+
+    lessonsInTheWeek.forEach((element) => {
+      const date = new Date(element.date);
+      date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+
+      if (date.getDay() == 0) {
+        sunday.push(element);
+      } else if (date.getDay() == 1) {
+        monday.push(element);
+      } else if (date.getDay() == 2) {
+        tuesday.push(element);
+      } else if (date.getDay() == 3) {
+        wednesday.push(element);
+      } else if (date.getDay() == 4) {
+        thursday.push(element);
+      } else if (date.getDay() == 5) {
+        friday.push(element);
+      } else if (date.getDay() == 6) {
+        saturday.push(element);
+      } else {
+        console.log("not equal to any days");
+      }
+    });
+
+    let data = {
+      monday: monday,
+      tuesday: tuesday,
+      wednesday: wednesday,
+      thursday: thursday,
+      friday: friday,
+      saturday: saturday,
+      sunday: sunday,
+    };
+
+    return res.json({
+      code: res.statusCode,
+      status: "success",
+      data: data,
+    });
+  } catch (error) {
+    next(error);
+    return res.status(404).json({
+      code: res.statusCode,
+      status: "error",
+      message: error,
+    });
+  }
+};
+
 module.exports = {
   getAllTeachers,
   getLastTeachers,
   getSingleTeacher,
   getSingleTeacherCourses,
   getSingleTeacherLessons,
+  getSingleTeacherLessonsGroupByDay,
   getSingleTeacherStudents,
   createTeacher,
   updateTeacher,

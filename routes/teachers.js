@@ -7,6 +7,7 @@ const {
   getSingleTeacher,
   getSingleTeacherCourses,
   getSingleTeacherLessons,
+  getSingleTeacherLessonsGroupByDay,
   getSingleTeacherStudents,
   createTeacher,
   updateTeacher,
@@ -19,6 +20,7 @@ router.put("/:id", updateTeacher);
 router.get("/:id", getSingleTeacher);
 router.get("/:id/courses", getSingleTeacherCourses);
 router.get("/:id/lessons", getSingleTeacherLessons);
+router.get("/:id/lessonsgroupbyday", getSingleTeacherLessonsGroupByDay);
 router.get("/:id/students", getSingleTeacherStudents);
 
 module.exports = router;
