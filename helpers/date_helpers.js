@@ -26,9 +26,9 @@ const compareDates = (d1, d2) => {
 };
 
 const findTheDateInTheWeek = (d1, d2, d3) => {
-  let date1 = new Date(d1).getTime();
-  let date2 = new Date(d2).getTime();
-  let date3 = new Date(d3).getTime();
+  let date1 = new Date(d1).setHours(0, 0, 0, 0);
+  let date2 = new Date(d2).setHours(0, 0, 0, 0);
+  let date3 = new Date(d3).setHours(0, 0, 0, 0);
 
   if (date1 <= date2 && date2 <= date3) {
     return true;

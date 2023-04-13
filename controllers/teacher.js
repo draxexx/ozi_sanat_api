@@ -491,7 +491,7 @@ const getSingleTeacherLessonsGroupByDay = async (req, res, next) => {
 
     lessonsInTheWeek.forEach((element) => {
       const date = new Date(element.date);
-      date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+      // date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
 
       if (date.getDay() == 0) {
         sunday.push(element);
