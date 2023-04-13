@@ -198,14 +198,16 @@ const getSingleTeacherLessons = async (req, res, next) => {
           students.push(studentPayment.student);
         });
 
-        unsortedDateList.push({
-          id: lesson.id,
-          isCompleted: lesson.isCompleted,
-          date: lesson.date,
-          active: lesson.active,
-          course: lesson.teacherCourse.branchCourse.course,
-          students: students,
-        });
+        if (students[0].active != false) {
+          unsortedDateList.push({
+            id: lesson.id,
+            isCompleted: lesson.isCompleted,
+            date: lesson.date,
+            active: lesson.active,
+            course: lesson.teacherCourse.branchCourse.course,
+            students: students,
+          });
+        }
       });
     });
 
@@ -450,14 +452,16 @@ const getSingleTeacherLessonsGroupByDay = async (req, res, next) => {
           students.push(studentPayment.student);
         });
 
-        unsortedDateList.push({
-          id: lesson.id,
-          isCompleted: lesson.isCompleted,
-          date: lesson.date,
-          active: lesson.active,
-          course: lesson.teacherCourse.branchCourse.course,
-          students: students,
-        });
+        if (students[0].active != false) {
+          unsortedDateList.push({
+            id: lesson.id,
+            isCompleted: lesson.isCompleted,
+            date: lesson.date,
+            active: lesson.active,
+            course: lesson.teacherCourse.branchCourse.course,
+            students: students,
+          });
+        }
       });
     });
 
